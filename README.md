@@ -31,7 +31,7 @@ HTTP POST /v3/delivery-price/calculate
 ```
 #### Метод получения истории расчетов
 ```
-HTTP POST /v2/delivery-price/get-history
+HTTP POST /v3/delivery-price/get-history
     Request JSON: { take: 0 }
     Response JSON: 200 [{
         cargo: { 
