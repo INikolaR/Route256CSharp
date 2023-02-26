@@ -66,7 +66,10 @@ public class V1DeliveryPriseController : ControllerBase
         _priceCalculatorService.DeleteHistory();
         return new DeleteHistoryResponse();
     }
-
+    /// <summary>
+    /// Метод получения статистических данных
+    /// </summary>
+    /// <returns></returns>
     [HttpPost("reports/01")]
     public ReportResponse Report(ReportRequest request)
     {
