@@ -1,4 +1,5 @@
 using Route256.Week1.Homework.PriceCalculator.Api.Bll.Models.PriceCalculator;
+using Route256.Week1.Homework.PriceCalculator.Api.Bll.Models.Report;
 using Route256.Week1.Homework.PriceCalculator.Api.Bll.Services.Interfaces;
 using Route256.Week1.Homework.PriceCalculator.Api.Dal.Entities;
 using Route256.Week1.Homework.PriceCalculator.Api.Dal.Repositories.Interfaces;
@@ -33,12 +34,14 @@ public class PriceCalculatorService : IPriceCalculatorService
         var weightPrice = CalculatePriceByWeight(goods, out var weight);
 
         var resultPrice = Math.Max(volumePrice, weightPrice) * (distance / 1000);
-        
+        var quantity = goods.Count;
+
         _storageRepository.Save(new StorageEntity(
             DateTime.UtcNow,
             volume / 1e6m,
             weight * 1000,
             resultPrice,
+            quantity,
             distance));
         
         return resultPrice;
@@ -49,7 +52,7 @@ public class PriceCalculatorService : IPriceCalculatorService
         out decimal volume)
     {
         volume = goods
-            .Select(x => x.Height * x.Width * x.Height * 1e6m)
+            .Select(x => x.Height * x.Width * x.Length * 1e6m)
             .Sum();
 
         return volume * volumeToPriceRatio;
@@ -90,5 +93,32 @@ public class PriceCalculatorService : IPriceCalculatorService
     public void DeleteHistory()
     {
         _storageRepository.Clear();
+    }
+
+    public ReportModel GetReport()
+    {
+        var report = _storageRepository.Query();
+        if (!report.Any())
+        {
+            return new ReportModel(
+                0,
+                0,
+                0,
+                0,
+                0);
+        }
+
+        var maxWeight = report.Max(x => x.Weight);
+        var maxVolume = report.Max(x => x.Volume);
+        return new ReportModel(
+            maxWeight,
+            maxVolume,
+            report.Where(x => x.Weight == maxWeight)
+                                      .Max(x => x.Distance),
+            report.Where(x => x.Volume == maxVolume)
+                                      .Max(x => x.Distance),
+            report.Sum(x => x.Price * x.Quantity)
+                        / report.Sum(x => x.Quantity));
+
     }
 }

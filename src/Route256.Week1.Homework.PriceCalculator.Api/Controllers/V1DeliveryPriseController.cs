@@ -66,4 +66,16 @@ public class V1DeliveryPriseController : ControllerBase
         _priceCalculatorService.DeleteHistory();
         return new DeleteHistoryResponse();
     }
+
+    [HttpPost("reports/01")]
+    public ReportResponse Report(ReportRequest request)
+    {
+        var report = _priceCalculatorService.GetReport();
+        return new ReportResponse(
+            report.MaxVolume,
+            report.MaxWeight,
+            report.MaxDistanceForHeaviestGood,
+            report.MaxDistanceForLargestGood,
+            report.WAvgPrice);
+    }
 }

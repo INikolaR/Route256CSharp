@@ -5,4 +5,5 @@ public record StorageEntity(
     decimal Volume,
     decimal Weight,
     decimal Price,
+    decimal Quantity,
     decimal Distance);
