@@ -21,4 +21,9 @@ public class StorageRepository : IStorageRepository
     {
         return _store;
     }
+
+    public void Clear()
+    {
+        _store.Clear();
+    }
 }

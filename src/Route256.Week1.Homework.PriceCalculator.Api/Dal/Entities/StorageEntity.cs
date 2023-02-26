@@ -4,4 +4,5 @@ public record StorageEntity(
     DateTime At,
     decimal Volume,
     decimal Weight,
-    decimal Price);
+    decimal Price,
+    decimal Distance);

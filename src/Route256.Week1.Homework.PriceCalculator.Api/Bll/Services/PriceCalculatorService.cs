@@ -18,8 +18,12 @@ public class PriceCalculatorService : IPriceCalculatorService
         _storageRepository = storageRepository;
     }
     
-    public decimal CalculatePrice(IReadOnlyList<GoodModel> goods)
+    public decimal CalculatePrice(IReadOnlyList<GoodModel> goods, decimal distance = 1000)
     {
+        if (distance < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(distance));
+        }
         if (!goods.Any())
         {
             throw new ArgumentOutOfRangeException(nameof(goods));
@@ -28,13 +32,14 @@ public class PriceCalculatorService : IPriceCalculatorService
         var volumePrice = CalculatePriceByVolume(goods, out var volume);
         var weightPrice = CalculatePriceByWeight(goods, out var weight);
 
-        var resultPrice = Math.Max(volumePrice, weightPrice);
+        var resultPrice = Math.Max(volumePrice, weightPrice) * (distance / 1000);
         
         _storageRepository.Save(new StorageEntity(
             DateTime.UtcNow,
-            volume,
-            weight,
-            resultPrice));
+            volume / 1e6m,
+            weight * 1000,
+            resultPrice,
+            distance));
         
         return resultPrice;
     }
@@ -44,7 +49,7 @@ public class PriceCalculatorService : IPriceCalculatorService
         out decimal volume)
     {
         volume = goods
-            .Select(x => x.Height * x.Width * x.Height / 1000)
+            .Select(x => x.Height * x.Width * x.Height * 1e6m)
             .Sum();
 
         return volume * volumeToPriceRatio;
@@ -77,7 +82,13 @@ public class PriceCalculatorService : IPriceCalculatorService
             .Select(x => new CalculationLogModel(
                 x.Volume, 
                 x.Weight,
-                x.Price))
+                x.Price,
+                x.Distance))
             .ToArray();
+    }
+
+    public void DeleteHistory()
+    {
+        _storageRepository.Clear();
     }
 }
