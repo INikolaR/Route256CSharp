@@ -5,7 +5,8 @@ namespace Route256.Week1.Homework.PriceCalculator.Api.Bll.Services.Interfaces;
 
 public interface IPriceCalculatorService
 {
-    decimal CalculatePrice(IReadOnlyList<GoodModel> goods, decimal distance = 1000);
+    private const int DistanceToPriceRatio = 1000;
+    decimal CalculatePrice(IReadOnlyList<GoodModel> goods, int distance = DistanceToPriceRatio);
 
     CalculationLogModel[] QueryLog(int take);
     void DeleteHistory();

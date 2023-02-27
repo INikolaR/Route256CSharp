@@ -8,8 +8,11 @@ namespace Route256.Week1.Homework.PriceCalculator.Api.Bll.Services;
 
 public class PriceCalculatorService : IPriceCalculatorService
 {
-    private const decimal volumeToPriceRatio = 3.27m;
-    private const decimal weightToPriceRatio = 1.34m;
+    private const decimal VolumeToPriceRatio = 3.27m;
+    private const decimal WeightToPriceRatio = 1.34m;
+    private const int DistanceToKilometersRatio = 1000;
+    private const decimal WeightToGramsRatio = 1000m;
+    private const decimal VolumeToCentimeters3Ratio = 1e6m;
     
     private readonly IStorageRepository _storageRepository;
     
@@ -19,7 +22,7 @@ public class PriceCalculatorService : IPriceCalculatorService
         _storageRepository = storageRepository;
     }
     
-    public decimal CalculatePrice(IReadOnlyList<GoodModel> goods, decimal distance = 1000)
+    public decimal CalculatePrice(IReadOnlyList<GoodModel> goods, int distance = DistanceToKilometersRatio)
     {
         if (distance < 1)
         {
@@ -33,13 +36,13 @@ public class PriceCalculatorService : IPriceCalculatorService
         var volumePrice = CalculatePriceByVolume(goods, out var volume);
         var weightPrice = CalculatePriceByWeight(goods, out var weight);
 
-        var resultPrice = Math.Max(volumePrice, weightPrice) * (distance / 1000);
+        var resultPrice = CalculateResultPrice(volumePrice, weightPrice, distance);
         var quantity = goods.Count;
 
         _storageRepository.Save(new StorageEntity(
             DateTime.UtcNow,
-            volume / 1e6m,
-            weight * 1000,
+            volume / VolumeToCentimeters3Ratio,
+            weight * WeightToGramsRatio,
             resultPrice,
             quantity,
             distance));
@@ -47,15 +50,20 @@ public class PriceCalculatorService : IPriceCalculatorService
         return resultPrice;
     }
 
+    private decimal CalculateResultPrice(decimal volumePrice, decimal weightPrice, decimal distance)
+    {
+        return Math.Max(volumePrice, weightPrice) * ((decimal)distance / DistanceToKilometersRatio);
+    }
+
     private decimal CalculatePriceByVolume(
         IReadOnlyList<GoodModel> goods,
         out decimal volume)
     {
         volume = goods
-            .Select(x => x.Height * x.Width * x.Length * 1e6m)
+            .Select(x => x.Height * x.Width * x.Length * VolumeToCentimeters3Ratio)
             .Sum();
 
-        return volume * volumeToPriceRatio;
+        return volume * VolumeToPriceRatio;
     }
     
     private decimal CalculatePriceByWeight(
@@ -63,10 +71,10 @@ public class PriceCalculatorService : IPriceCalculatorService
         out decimal weight)
     {
         weight = goods
-            .Select(x => x.Weight / 1000)
+            .Select(x => x.Weight / WeightToGramsRatio)
             .Sum();
 
-        return weight * weightToPriceRatio;
+        return weight * WeightToPriceRatio;
     }
 
     public CalculationLogModel[] QueryLog(int take)
