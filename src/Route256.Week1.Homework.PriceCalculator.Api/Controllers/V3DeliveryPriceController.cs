@@ -12,6 +12,8 @@ namespace Route256.Week1.Homework.PriceCalculator.Api.Controllers;
 [Route("/v3/[controller]")]
 public class V3DeliveryPriceController : ControllerBase
 {
+    private const decimal ToMillimeters = 1000;
+    private const decimal ToTonnes = 1 / 1000m;
     private readonly IPriceCalculatorService _priceCalculatorService;
 
     public V3DeliveryPriceController(
@@ -32,10 +34,10 @@ public class V3DeliveryPriceController : ControllerBase
         var price = _priceCalculatorService.CalculatePrice(
             request.Goods
                 .Select(x => new GoodModel(
-                    x.Height,
-                    x.Length,
-                    x.Width,
-                    x.Weight))
+                    x.Height * ToMillimeters,
+                    x.Length * ToMillimeters,
+                    x.Width * ToMillimeters,
+                    x.Weight * ToTonnes))
                 .ToArray(),
             request.Distance);
         
@@ -54,8 +56,8 @@ public class V3DeliveryPriceController : ControllerBase
         return log
             .Select(x => new GetHistoryResponse(
                 new CargoResponse(
-                    x.Volume,
-                    x.Weight),
+                    x.Volume / ToMillimeters / ToMillimeters / ToMillimeters,
+                    x.Weight / ToTonnes),
                 x.Price,
                 x.Distance))
             .ToArray();

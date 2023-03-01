@@ -75,8 +75,8 @@ public class V1DeliveryPriseController : ControllerBase
     {
         var report = _priceCalculatorService.GetReport();
         return new ReportResponse(
-            report.MaxVolume,
             report.MaxWeight,
+            report.MaxVolume,
             report.MaxDistanceForHeaviestGood,
             report.MaxDistanceForLargestGood,
             report.WAvgPrice);

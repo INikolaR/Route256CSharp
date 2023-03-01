@@ -11,8 +11,8 @@ public class PriceCalculatorService : IPriceCalculatorService
     private const decimal VolumeToPriceRatio = 3.27m;
     private const decimal WeightToPriceRatio = 1.34m;
     private const int DistanceToKilometersRatio = 1000;
-    private const decimal WeightToGramsRatio = 1000m;
-    private const decimal VolumeToCentimeters3Ratio = 1e6m;
+    private const decimal WeightToTonnesRatio = 1m;
+    private const decimal VolumeToCentimeters3Ratio = 1e3m;
     
     private readonly IStorageRepository _storageRepository;
     
@@ -24,9 +24,9 @@ public class PriceCalculatorService : IPriceCalculatorService
     
     public decimal CalculatePrice(IReadOnlyList<GoodModel> goods, int distance = DistanceToKilometersRatio)
     {
-        if (distance < 1)
+        if (distance < 1) // We must block all distances less than 1.
         {
-            throw new ArgumentOutOfRangeException(nameof(distance));
+            throw new ArgumentOutOfRangeException(nameof(distance), "Distance must not be less than 1");
         }
         if (!goods.Any())
         {
@@ -41,8 +41,8 @@ public class PriceCalculatorService : IPriceCalculatorService
 
         _storageRepository.Save(new StorageEntity(
             DateTime.UtcNow,
-            volume / VolumeToCentimeters3Ratio,
-            weight * WeightToGramsRatio,
+            volume,
+            weight,
             resultPrice,
             quantity,
             distance));
@@ -60,7 +60,7 @@ public class PriceCalculatorService : IPriceCalculatorService
         out decimal volume)
     {
         volume = goods
-            .Select(x => x.Height * x.Width * x.Length * VolumeToCentimeters3Ratio)
+            .Select(x => x.Height * x.Width * x.Length / VolumeToCentimeters3Ratio)
             .Sum();
 
         return volume * VolumeToPriceRatio;
@@ -71,7 +71,7 @@ public class PriceCalculatorService : IPriceCalculatorService
         out decimal weight)
     {
         weight = goods
-            .Select(x => x.Weight / WeightToGramsRatio)
+            .Select(x => x.Weight / WeightToTonnesRatio)
             .Sum();
 
         return weight * WeightToPriceRatio;
@@ -91,8 +91,8 @@ public class PriceCalculatorService : IPriceCalculatorService
 
         return log
             .Select(x => new CalculationLogModel(
-                x.Volume, 
-                x.Weight,
+                x.Volume * VolumeToCentimeters3Ratio, 
+                x.Weight * WeightToTonnesRatio,
                 x.Price,
                 x.Distance))
             .ToArray();
@@ -116,11 +116,15 @@ public class PriceCalculatorService : IPriceCalculatorService
                 0);
         }
 
+        foreach (var item in report)
+        {
+            Console.WriteLine($"{item.Weight} {item.Volume}");
+        }
         var maxWeight = report.Max(x => x.Weight);
         var maxVolume = report.Max(x => x.Volume);
         return new ReportModel(
-            maxWeight,
-            maxVolume,
+            maxWeight * WeightToTonnesRatio,
+            maxVolume * VolumeToCentimeters3Ratio,
             report.Where(x => x.Weight == maxWeight)
                                       .Max(x => x.Distance),
             report.Where(x => x.Volume == maxVolume)
