@@ -15,6 +15,7 @@ services.AddSwaggerGen(o =>
     o.CustomSchemaIds(x => x.FullName);
 });
 services.AddScoped<IPriceCalculatorService, PriceCalculatorService>();
+services.AddScoped<IReportService, ReportService>();
 services.AddSingleton<IStorageRepository, StorageRepository>();
 
 

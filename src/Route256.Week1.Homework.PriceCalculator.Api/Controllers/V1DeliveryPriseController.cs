@@ -11,11 +11,13 @@ namespace Route256.Week1.Homework.PriceCalculator.Api.Controllers;
 public class V1DeliveryPriseController : ControllerBase
 {
     private readonly IPriceCalculatorService _priceCalculatorService;
+    private readonly IReportService _reportService;
 
     public V1DeliveryPriseController(
-        IPriceCalculatorService priceCalculatorService)
+        IPriceCalculatorService priceCalculatorService, IReportService reportService)
     {
         _priceCalculatorService = priceCalculatorService;
+        _reportService = reportService;
     }
     
     /// <summary>
@@ -73,7 +75,7 @@ public class V1DeliveryPriseController : ControllerBase
     [HttpPost("reports/01")]
     public ReportResponse Report(ReportRequest request)
     {
-        var report = _priceCalculatorService.GetReport();
+        var report = _reportService.GetReport();
         return new ReportResponse(
             report.MaxWeight,
             report.MaxVolume,

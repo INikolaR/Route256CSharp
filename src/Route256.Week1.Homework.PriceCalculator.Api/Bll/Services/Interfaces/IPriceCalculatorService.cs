@@ -10,6 +10,4 @@ public interface IPriceCalculatorService
 
     CalculationLogModel[] QueryLog(int take);
     void DeleteHistory();
-
-    ReportModel GetReport();
 }

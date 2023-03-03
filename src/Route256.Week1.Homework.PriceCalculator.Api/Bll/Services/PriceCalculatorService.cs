@@ -97,45 +97,9 @@ public class PriceCalculatorService : IPriceCalculatorService
                 x.Distance))
             .ToArray();
     }
-    
+
     public void DeleteHistory()
     {
         _storageRepository.Clear();
-    }
-
-    public ReportModel GetReport()
-    {
-        var report = _storageRepository.Query();
-        if (!report.Any())
-        {
-            return new ReportModel(
-                0,
-                0,
-                0,
-                0,
-                0);
-        }
-
-        foreach (var item in report)
-        {
-            Console.WriteLine($"{item.Weight} {item.Volume}");
-        }
-        var maxWeight = report.Max(x => x.Weight);
-        var maxVolume = report.Max(x => x.Volume);
-        return new ReportModel(
-            maxWeight * WeightToTonnesRatio,
-            maxVolume * VolumeToCentimeters3Ratio,
-            report.Where(x => x.Weight == maxWeight)
-                                      .Max(x => x.Distance),
-            report.Where(x => x.Volume == maxVolume)
-                                      .Max(x => x.Distance),
-            // Для подсчёта средневзвешенной по количеству товаров стоимости
-            // нужно разделить сумму произведений количества товара с его стоимостью
-            // на сумму количеств товаров (формула есть на
-            // https://ru.wikipedia.org/wiki/Среднее_арифметическое_взвешенное,
-            // в качестве усредняемого берется цена, в качестве веса - Quantity).
-            report.Sum(x => x.Price * x.Quantity)
-                        / report.Sum(x => x.Quantity));
-
     }
 }
