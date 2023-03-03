@@ -97,7 +97,7 @@ public class PriceCalculatorService : IPriceCalculatorService
                 x.Distance))
             .ToArray();
     }
-
+    
     public void DeleteHistory()
     {
         _storageRepository.Clear();
@@ -129,6 +129,11 @@ public class PriceCalculatorService : IPriceCalculatorService
                                       .Max(x => x.Distance),
             report.Where(x => x.Volume == maxVolume)
                                       .Max(x => x.Distance),
+            // Для подсчёта средневзвешенной по количеству товаров стоимости
+            // нужно разделить сумму произведений количества товара с его стоимостью
+            // на сумму количеств товаров (формула есть на
+            // https://ru.wikipedia.org/wiki/Среднее_арифметическое_взвешенное,
+            // в качестве усредняемого берется цена, в качестве веса - Quantity).
             report.Sum(x => x.Price * x.Quantity)
                         / report.Sum(x => x.Quantity));
 
