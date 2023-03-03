@@ -52,7 +52,7 @@ public class PriceCalculatorService : IPriceCalculatorService
 
     private decimal CalculateResultPrice(decimal volumePrice, decimal weightPrice, decimal distance)
     {
-        return Math.Max(volumePrice, weightPrice) * ((decimal)distance / DistanceToKilometersRatio);
+        return Math.Max(volumePrice, weightPrice) * (distance / DistanceToKilometersRatio);
     }
 
     private decimal CalculatePriceByVolume(
