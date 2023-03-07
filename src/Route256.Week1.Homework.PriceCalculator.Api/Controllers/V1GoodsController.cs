@@ -48,28 +48,4 @@ public sealed class V1GoodsController
         var price = priceCalculatorService.CalculatePrice(new []{ model });
         return new CalculateResponse(price);
     }
-    /// <summary>
-    /// Метод для вычисления полной стоимости товара (стоимость доставки + стоимость самого товара).
-    /// </summary>
-    /// <param name="priceCalculatorService"></param>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    [HttpPost("calculateFullPrice/{id}")]
-    public CalculateResponse CalculateFullPrice(
-        [FromServices] IPriceCalculatorService priceCalculatorService,
-        int id)
-    {
-        _logger.LogInformation(_httpContextAccessor.HttpContext.Request.Path);
-        
-        var good = _repository.Get(id);
-        var model = new GoodModel(
-            good.Height,
-            good.Length,
-            good.Width,
-            good.Weight);
-        
-        // Суммируем цену за доставку товара с ценой самого товара.
-        var price = priceCalculatorService.CalculatePrice(new []{ model }) + good.Price;
-        return new CalculateResponse(price);
-    }
 }

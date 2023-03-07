@@ -52,7 +52,7 @@ public class LoggingFullPriceMiddleware
                     _logger.LogInformation( // Логгируем.
                         "\nRequest:\n" +
                         $"  Timestamp: {DateTime.Now}\n" +
-                        $"  Url: {context.Request.Path}\n" +
+                        $"  Url: {context.Request.Host + context.Request.Path}\n" +
                         $"  Headers: {requestHeadersString}\n" +
                         $"  Body: {requestBodyString}\n" + 
                         $"Response:\n" +
