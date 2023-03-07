@@ -33,6 +33,7 @@ public sealed class Startup
             });
         
         services.Configure<PriceCalculatorOptions>(_configuration.GetSection("PriceCalculatorOptions"));
+        services.Configure<GoodsSyncHostedOptions>(_configuration.GetSection("HostedServicesOptions"));
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(o =>
