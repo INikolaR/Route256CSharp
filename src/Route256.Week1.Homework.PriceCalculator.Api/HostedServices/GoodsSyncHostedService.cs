@@ -32,7 +32,7 @@ public sealed class GoodsSyncHostedService: BackgroundService
                 foreach (var good in goods)
                     _repository.AddOrUpdate(good);
             }
-            Console.WriteLine(DateTime.Now);
+            // Через _options.CurrentValue.SecondsDelay получается доступ к данным из конфига.
             await Task.Delay(TimeSpan.FromSeconds(_options.CurrentValue.SecondsDelay), stoppingToken);
         }
     }
