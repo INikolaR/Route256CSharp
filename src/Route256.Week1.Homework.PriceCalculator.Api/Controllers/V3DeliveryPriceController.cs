@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Route256.Week1.Homework.PriceCalculator.Api.Bll.Models.PriceCalculator;
 using Route256.Week1.Homework.PriceCalculator.Api.Bll.Services;
-using Route256.Week1.Homework.PriceCalculator.Api.Bll.Services.Interfaces;
-using Route256.Week1.Homework.PriceCalculator.Api.Dal.Entities;
 using Route256.Week1.Homework.PriceCalculator.Api.Dal.Repositories.Interfaces;
 using Route256.Week1.Homework.PriceCalculator.Api.Requests.V3;
 using Route256.Week1.Homework.PriceCalculator.Api.Responses.V3;
@@ -15,8 +13,9 @@ public class V3DeliveryPriceController
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<V3DeliveryPriceController> _logger;
     private readonly IGoodsRepository _repository;
-
+    private readonly IPriceCalculatorDistanceService _priceCalculatorDistanceService;
     public V3DeliveryPriceController(
+        [FromServices] IPriceCalculatorDistanceService priceCalculatorDistanceService,
         IHttpContextAccessor httpContextAccessor,
         ILogger<V3DeliveryPriceController> logger,
         IGoodsRepository repository)
@@ -24,9 +23,9 @@ public class V3DeliveryPriceController
         _httpContextAccessor = httpContextAccessor;
         _logger = logger;
         _repository = repository;
+        _priceCalculatorDistanceService = priceCalculatorDistanceService;
     }
-
-
+    
     /// <summary>
     /// Метод для вычисления полной стоимости товара (стоимость доставки + стоимость самого товара).
     /// </summary>
@@ -37,7 +36,6 @@ public class V3DeliveryPriceController
     [HttpPost("calculateFullPrice/{id}")]
     public CalculateResponse CalculateFullPrice(
         CalculateRequest request,
-        [FromServices] IPriceCalculatorDistanceService priceCalculatorDistanceService, 
         int id)
     {
         _logger.LogInformation(_httpContextAccessor.HttpContext.Request.Path);
@@ -50,7 +48,7 @@ public class V3DeliveryPriceController
             good.Weight);
         
         // Суммируем цену за доставку товара с ценой самого товара.
-        var price = priceCalculatorDistanceService.CalculatePrice(new []{ model }, request.Distance) + good.Price;
+        var price = _priceCalculatorDistanceService.CalculatePrice(new []{ model }, request.Distance) + good.Price;
         return new CalculateResponse(price);
     }
 }

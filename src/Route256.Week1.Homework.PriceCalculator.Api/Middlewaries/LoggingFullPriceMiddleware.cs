@@ -1,6 +1,4 @@
-﻿using System.Net;
-using System.Text;
-using FluentValidation;
+﻿using System.Text;
 
 namespace Route256.Week1.Homework.PriceCalculator.Api.Middlewaries;
 
@@ -62,12 +60,5 @@ public class LoggingFullPriceMiddleware
         } finally {
             context.Response.Body = originalBody;
         }
-        
-        
-        
-        
-        
-        
-        
     }
 }

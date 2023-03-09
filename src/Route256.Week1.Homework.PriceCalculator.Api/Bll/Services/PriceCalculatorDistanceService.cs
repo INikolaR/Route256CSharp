@@ -5,7 +5,7 @@ using Route256.Week1.Homework.PriceCalculator.Api.Dal.Repositories.Interfaces;
 
 namespace Route256.Week1.Homework.PriceCalculator.Api.Bll.Services;
 /// <summary>
-/// Метод для вычисления стоимости доставки товаров на определённое расстоние.
+/// Класс для вычисления стоимости доставки товаров на определённое расстоние.
 /// </summary>
 public class PriceCalculatorDistanceService : IPriceCalculatorDistanceService
 {
