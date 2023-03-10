@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "dgSpecHash": "EE/R2oUnmfhvDFVPK6Jh9hnFEtzg7S4tEOmeBERJVdg/iAdZRCyeqe+GlT3Shn9OOL0k7Vbvbl+zZeTjvJ3Q0A==",
+  "success": true,
+  "projectFilePath": "/Users/ksoshin/Projects/route256/runtime/hw3/src/Route256.PriceCalculator.Api/Route256.PriceCalculator.Api.csproj",
+  "expectedPackageFiles": [
+    "/Users/ksoshin/.nuget/packages/fluentvalidation/11.5.1/fluentvalidation.11.5.1.nupkg.sha512",
+    "/Users/ksoshin/.nuget/packages/microsoft.extensions.apidescription.server/3.0.0/microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "/Users/ksoshin/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
+    "/Users/ksoshin/.nuget/packages/swashbuckle.aspnetcore/6.2.3/swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "/Users/ksoshin/.nuget/packages/swashbuckle.aspnetcore.swagger/6.2.3/swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "/Users/ksoshin/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.2.3/swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "/Users/ksoshin/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.2.3/swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512",
+    "/Users/ksoshin/.nuget/packages/microsoft.netcore.app.ref/6.0.12/microsoft.netcore.app.ref.6.0.12.nupkg.sha512",
+    "/Users/ksoshin/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.12/microsoft.aspnetcore.app.ref.6.0.12.nupkg.sha512",
+    "/Users/ksoshin/.nuget/packages/microsoft.netcore.app.host.osx-x64/6.0.12/microsoft.netcore.app.host.osx-x64.6.0.12.nupkg.sha512"
+  ],
+  "logs": []
+}

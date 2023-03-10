@@ -1,0 +1,89 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/ksoshin/Projects/route256/runtime/hw3/src/Route256.PriceCalculator.Api/Route256.PriceCalculator.Api.csproj": {}
+  },
+  "projects": {
+    "/Users/ksoshin/Projects/route256/runtime/hw3/src/Route256.PriceCalculator.Api/Route256.PriceCalculator.Api.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/ksoshin/Projects/route256/runtime/hw3/src/Route256.PriceCalculator.Api/Route256.PriceCalculator.Api.csproj",
+        "projectName": "Route256.PriceCalculator.Api",
+        "projectPath": "/Users/ksoshin/Projects/route256/runtime/hw3/src/Route256.PriceCalculator.Api/Route256.PriceCalculator.Api.csproj",
+        "packagesPath": "/Users/ksoshin/.nuget/packages/",
+        "outputPath": "/Users/ksoshin/Projects/route256/runtime/hw3/src/Route256.PriceCalculator.Api/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/ksoshin/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {},
+          "https://artifactory.s.o3.ru/artifactory/api/nuget/v3/nuget-virtual-virtual": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.5.1, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.2.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[6.0.12, 6.0.12]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.osx-x64",
+              "version": "[6.0.12, 6.0.12]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[6.0.12, 6.0.12]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/x64/sdk/7.0.101/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
