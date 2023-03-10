@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../buildMultiTargeting/Route256.PriceCalculator.Api.props" />
-</Project>
