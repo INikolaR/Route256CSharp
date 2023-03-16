@@ -15,4 +15,8 @@
     <_ContentIncludedByDefault Remove="Views\GoodsPageView.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Route256.PriceCalculator.Infrastructure\Route256.PriceCalculator.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

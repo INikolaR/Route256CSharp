@@ -1,9 +1,9 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using Route256.PriceCalculator.Api.Bll.Models.PriceCalculator;
-using Route256.PriceCalculator.Api.Bll.Services.Interfaces;
 using Route256.PriceCalculator.Api.Responses.V2;
 using Route256.PriceCalculator.Api.Validators;
+using Route256.PriceCalculator.Domain.Models.PriceCalculator;
+using Route256.PriceCalculator.Domain.Services.Interfaces;
 using CalculateRequest = Route256.PriceCalculator.Api.Requests.V2.CalculateRequest;
 
 namespace Route256.PriceCalculator.Api.Controllers;

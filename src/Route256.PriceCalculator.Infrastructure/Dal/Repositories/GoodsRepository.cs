@@ -1,7 +1,9 @@
-using Route256.PriceCalculator.Api.Dal.Entities;
-using Route256.PriceCalculator.Api.Dal.Repositories.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
+using Route256.PriceCalculator.Domain.Entities;
+using Route256.PriceCalculator.Domain.Separated;
 
-namespace Route256.PriceCalculator.Api.Dal.Repositories;
+namespace Route256.PriceCalculator.Infrastructure.Dal.Repositories;
 
 public sealed class GoodsRepository : IGoodsRepository
 {

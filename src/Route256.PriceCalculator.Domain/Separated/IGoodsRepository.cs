@@ -1,6 +1,7 @@
-using Route256.PriceCalculator.Api.Dal.Entities;
+using System.Collections.Generic;
+using Route256.PriceCalculator.Domain.Entities;
 
-namespace Route256.PriceCalculator.Api.Dal.Repositories.Interfaces;
+namespace Route256.PriceCalculator.Domain.Separated;
 
 public interface IGoodsRepository
 {

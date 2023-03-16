@@ -1,12 +1,14 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Route256.PriceCalculator.Api.ActionFilters;
-using Route256.PriceCalculator.Api.Bll;
-using Route256.PriceCalculator.Api.Bll.Services;
-using Route256.PriceCalculator.Api.Bll.Services.Interfaces;
-using Route256.PriceCalculator.Api.Dal.Repositories;
-using Route256.PriceCalculator.Api.Dal.Repositories.Interfaces;
 using Route256.PriceCalculator.Api.HostedServices;
+using Route256.PriceCalculator.Domain;
+using Route256.PriceCalculator.Domain.Separated;
+using Route256.PriceCalculator.Domain.Services;
+using Route256.PriceCalculator.Domain.Services.Interfaces;
+using Route256.PriceCalculator.Infrastructure;
+using Route256.PriceCalculator.Infrastructure.Dal.Repositories;
 
 namespace Route256.PriceCalculator.Api;
 
@@ -38,7 +40,11 @@ public sealed class Startup
             o.CustomSchemaIds(x => x.FullName);
         });
         
-        services.AddScoped<IPriceCalculatorService, PriceCalculatorService>();
+        services.AddScoped<IPriceCalculatorService, PriceCalculatorService>(x =>
+        {
+            var options = x.GetRequiredService<IOptionsSnapshot<PriceCalculatorOptions>>().Value;
+            return new PriceCalculatorService(options, x.GetRequiredService<IStorageRepository>());
+        });
         services.AddScoped<IGoodPriceCalculatorService, GoodPriceCalculatorService>();
         services.AddHostedService<GoodsSyncHostedService>();
         services.AddSingleton<IStorageRepository, StorageRepository>();

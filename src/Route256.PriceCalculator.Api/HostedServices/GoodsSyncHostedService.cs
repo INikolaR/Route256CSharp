@@ -1,5 +1,5 @@
-using Route256.PriceCalculator.Api.Bll.Services.Interfaces;
-using Route256.PriceCalculator.Api.Dal.Repositories.Interfaces;
+using Route256.PriceCalculator.Domain.Separated;
+using Route256.PriceCalculator.Domain.Services.Interfaces;
 
 namespace Route256.PriceCalculator.Api.HostedServices;
 

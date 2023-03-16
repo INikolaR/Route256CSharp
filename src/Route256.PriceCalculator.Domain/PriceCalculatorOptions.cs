@@ -1,4 +1,4 @@
-namespace Route256.PriceCalculator.Api.Bll;
+namespace Route256.PriceCalculator.Domain;
 
 public sealed class PriceCalculatorOptions
 {

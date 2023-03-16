@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Route256.PriceCalculator.Api.Bll.Models.PriceCalculator;
-using Route256.PriceCalculator.Api.Bll.Services;
-using Route256.PriceCalculator.Api.Bll.Services.Interfaces;
 using Route256.PriceCalculator.Api.Requests.V3;
 using Route256.PriceCalculator.Api.Responses.V3;
+using Route256.PriceCalculator.Domain.Models.PriceCalculator;
+using Route256.PriceCalculator.Domain.Services;
+using Route256.PriceCalculator.Domain.Services.Interfaces;
 using CalculateRequest = Route256.PriceCalculator.Api.Requests.V3.CalculateRequest;
 
 namespace Route256.PriceCalculator.Api.Controllers;
@@ -26,7 +26,7 @@ public class V3DeliveryPriceController: Controller
         CalculateRequest request)
     {
         var price = _priceCalculatorService.CalculatePrice(
-            new Bll.Models.PriceCalculator.CalculateRequest(
+            new Route256.PriceCalculator.Domain.Models.PriceCalculator.CalculateRequest(
                 request.Goods
                     .Select(x => new GoodModel(
                         x.Height,

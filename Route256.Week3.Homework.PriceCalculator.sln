@@ -13,6 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{07872576
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriceCalculator.UnitTests", "tests\PriceCalculator.UnitTests\PriceCalculator.UnitTests.csproj", "{517E9232-F4F6-4AC9-A478-86E13C489DCC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Route256.PriceCalculator.Domain", "src\Route256.PriceCalculator.Domain\Route256.PriceCalculator.Domain.csproj", "{48B58C47-CC05-41C2-8715-24C9462B3904}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Route256.PriceCalculator.Infrastructure", "src\Route256.PriceCalculator.Infrastructure\Route256.PriceCalculator.Infrastructure.csproj", "{FF0EEB5D-C548-4109-9779-F87703AFAB3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,9 +31,19 @@ Global
 		{517E9232-F4F6-4AC9-A478-86E13C489DCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{517E9232-F4F6-4AC9-A478-86E13C489DCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{517E9232-F4F6-4AC9-A478-86E13C489DCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48B58C47-CC05-41C2-8715-24C9462B3904}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48B58C47-CC05-41C2-8715-24C9462B3904}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48B58C47-CC05-41C2-8715-24C9462B3904}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48B58C47-CC05-41C2-8715-24C9462B3904}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF0EEB5D-C548-4109-9779-F87703AFAB3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF0EEB5D-C548-4109-9779-F87703AFAB3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF0EEB5D-C548-4109-9779-F87703AFAB3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF0EEB5D-C548-4109-9779-F87703AFAB3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DCF3DC7E-12C8-4D4D-A7D8-692AB788C5AB} = {2DC0D6FD-3FB0-4539-B5B1-22135384744C}
 		{517E9232-F4F6-4AC9-A478-86E13C489DCC} = {07872576-384C-49C7-A133-EDEFA74664F7}
+		{48B58C47-CC05-41C2-8715-24C9462B3904} = {2DC0D6FD-3FB0-4539-B5B1-22135384744C}
+		{FF0EEB5D-C548-4109-9779-F87703AFAB3C} = {2DC0D6FD-3FB0-4539-B5B1-22135384744C}
 	EndGlobalSection
 EndGlobal

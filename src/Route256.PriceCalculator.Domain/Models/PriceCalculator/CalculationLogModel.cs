@@ -1,4 +1,4 @@
-namespace Route256.PriceCalculator.Api.Bll.Models.PriceCalculator;
+namespace Route256.PriceCalculator.Domain.Models.PriceCalculator;
 
 public record CalculationLogModel(
     decimal Volume,

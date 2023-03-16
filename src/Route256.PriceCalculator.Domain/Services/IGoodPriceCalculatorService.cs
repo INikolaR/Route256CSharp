@@ -1,4 +1,4 @@
-namespace Route256.PriceCalculator.Api.Bll.Services;
+namespace Route256.PriceCalculator.Domain.Services;
 
 public interface IGoodPriceCalculatorService
 {

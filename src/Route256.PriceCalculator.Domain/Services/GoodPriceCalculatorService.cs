@@ -1,9 +1,10 @@
-using Route256.PriceCalculator.Api.Bll.Models.PriceCalculator;
-using Route256.PriceCalculator.Api.Bll.Services.Interfaces;
-using Route256.PriceCalculator.Api.Dal.Entities;
-using Route256.PriceCalculator.Api.Dal.Repositories.Interfaces;
+using System;
+using Route256.PriceCalculator.Domain.Entities;
+using Route256.PriceCalculator.Domain.Models.PriceCalculator;
+using Route256.PriceCalculator.Domain.Separated;
+using Route256.PriceCalculator.Domain.Services.Interfaces;
 
-namespace Route256.PriceCalculator.Api.Bll.Services;
+namespace Route256.PriceCalculator.Domain.Services;
 
 public sealed class GoodPriceCalculatorService : IGoodPriceCalculatorService
 {

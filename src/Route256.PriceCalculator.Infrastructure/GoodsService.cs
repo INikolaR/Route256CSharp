@@ -1,7 +1,7 @@
-using Route256.PriceCalculator.Api.Bll.Services.Interfaces;
-using Route256.PriceCalculator.Api.Dal.Entities;
+using Route256.PriceCalculator.Domain.Entities;
+using Route256.PriceCalculator.Domain.Services.Interfaces;
 
-namespace Route256.PriceCalculator.Api.Bll.Services;
+namespace Route256.PriceCalculator.Infrastructure;
 
 public sealed class GoodsService : IGoodsService
 {

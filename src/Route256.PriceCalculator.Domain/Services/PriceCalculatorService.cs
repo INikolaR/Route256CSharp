@@ -1,10 +1,12 @@
-using Microsoft.Extensions.Options;
-using Route256.PriceCalculator.Api.Bll.Models.PriceCalculator;
-using Route256.PriceCalculator.Api.Bll.Services.Interfaces;
-using Route256.PriceCalculator.Api.Dal.Entities;
-using Route256.PriceCalculator.Api.Dal.Repositories.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Route256.PriceCalculator.Domain.Entities;
+using Route256.PriceCalculator.Domain.Models.PriceCalculator;
+using Route256.PriceCalculator.Domain.Separated;
+using Route256.PriceCalculator.Domain.Services.Interfaces;
 
-namespace Route256.PriceCalculator.Api.Bll.Services;
+namespace Route256.PriceCalculator.Domain.Services;
 
 public class PriceCalculatorService : IPriceCalculatorService
 {
@@ -15,11 +17,11 @@ public class PriceCalculatorService : IPriceCalculatorService
     private readonly IStorageRepository _storageRepository;
 
     public PriceCalculatorService(
-        IOptionsSnapshot<PriceCalculatorOptions> options,
+        PriceCalculatorOptions options,
         IStorageRepository storageRepository)
     {
-        _volumeToPriceRatio = options.Value.VolumeToPriceRatio;
-        _weightToPriceRatio = options.Value.WeightToPriceRatio;
+        _volumeToPriceRatio = options.VolumeToPriceRatio;
+        _weightToPriceRatio = options.WeightToPriceRatio;
         _storageRepository = storageRepository;
     }
     

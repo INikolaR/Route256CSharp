@@ -1,6 +1,7 @@
-using Route256.PriceCalculator.Api.Bll.Models.PriceCalculator;
+using System.Collections.Generic;
+using Route256.PriceCalculator.Domain.Models.PriceCalculator;
 
-namespace Route256.PriceCalculator.Api.Bll.Services.Interfaces;
+namespace Route256.PriceCalculator.Domain.Services.Interfaces;
 
 public interface IPriceCalculatorService
 {

@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Route256.PriceCalculator.Api.Bll.Models.PriceCalculator;
-using Route256.PriceCalculator.Api.Bll.Services.Interfaces;
-using Route256.PriceCalculator.Api.Dal.Entities;
-using Route256.PriceCalculator.Api.Dal.Repositories.Interfaces;
 using Route256.PriceCalculator.Api.Responses.V2;
+using Route256.PriceCalculator.Domain.Entities;
+using Route256.PriceCalculator.Domain.Models.PriceCalculator;
+using Route256.PriceCalculator.Domain.Separated;
+using Route256.PriceCalculator.Domain.Services.Interfaces;
 
 namespace Route256.PriceCalculator.Api.Controllers;
 

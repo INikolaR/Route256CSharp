@@ -1,4 +1,4 @@
-namespace Route256.PriceCalculator.Api.Dal.Entities;
+namespace Route256.PriceCalculator.Domain.Entities;
 
 public sealed record GoodEntity(
     string Name,

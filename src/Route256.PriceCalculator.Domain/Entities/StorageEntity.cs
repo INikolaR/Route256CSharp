@@ -1,4 +1,6 @@
-namespace Route256.PriceCalculator.Api.Dal.Entities;
+using System;
+
+namespace Route256.PriceCalculator.Domain.Entities;
 
 public record StorageEntity(
     DateTime At,
