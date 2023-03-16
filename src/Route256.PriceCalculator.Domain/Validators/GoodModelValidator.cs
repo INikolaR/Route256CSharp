@@ -1,11 +1,12 @@
 using FluentValidation;
+using System.Collections.Generic;
 using Route256.PriceCalculator.Domain.Models.PriceCalculator;
 
 namespace Route256.PriceCalculator.Domain.Validators;
 
-internal sealed class GoodPropertiesValidator: AbstractValidator<GoodModel>
+internal sealed class GoodModelValidator: AbstractValidator<GoodModel>
 {
-    public GoodPropertiesValidator()
+    public GoodModelValidator()
     {
         RuleFor(x => x.Weight)
             .GreaterThan(0)

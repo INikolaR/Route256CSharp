@@ -31,9 +31,6 @@ public class V2DeliveryPriceController : Controller
     [HttpPost("calculate")]
     public async Task<CalculateResponse> Calculate(CalculateRequest request)
     {
-        var validator = new CalculateRequestValidator();
-        await validator.ValidateAndThrowAsync(request);
-
         var price = _priceCalculatorService.CalculatePrice(
             request.Goods
                 .Select(x => new GoodModel(

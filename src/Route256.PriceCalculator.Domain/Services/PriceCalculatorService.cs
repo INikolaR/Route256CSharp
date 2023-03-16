@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentValidation;
 using Route256.PriceCalculator.Domain.Entities;
 using Route256.PriceCalculator.Domain.Models.PriceCalculator;
 using Route256.PriceCalculator.Domain.Separated;
 using Route256.PriceCalculator.Domain.Services.Interfaces;
+using Route256.PriceCalculator.Domain.Validators;
 
 namespace Route256.PriceCalculator.Domain.Services;
 
@@ -27,6 +29,10 @@ internal sealed class PriceCalculatorService : IPriceCalculatorService
     
     public decimal CalculatePrice(IReadOnlyList<GoodModel> goods)
     {
+        
+        var validator = new GoodsValidator();
+        validator.ValidateAndThrow(goods);
+        
         if (!goods.Any())
         {
             throw new ArgumentOutOfRangeException(nameof(goods));
