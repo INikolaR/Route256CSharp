@@ -1,9 +1,9 @@
 using FluentValidation;
-using Route256.PriceCalculator.Api.Requests.V2;
+using Route256.PriceCalculator.Domain.Models.PriceCalculator;
 
-namespace Route256.PriceCalculator.Api.Validators;
+namespace Route256.PriceCalculator.Domain.Validators;
 
-internal sealed class GoodPropertiesValidator: AbstractValidator<GoodProperties>
+internal sealed class GoodPropertiesValidator: AbstractValidator<GoodModel>
 {
     public GoodPropertiesValidator()
     {

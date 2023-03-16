@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Route256.PriceCalculator.Api.ActionFilters;
 using Route256.PriceCalculator.Api.HostedServices;
 using Route256.PriceCalculator.Domain;
+using Route256.PriceCalculator.Domain.DependencyInjection.Extensions;
 using Route256.PriceCalculator.Domain.Separated;
 using Route256.PriceCalculator.Domain.Services;
 using Route256.PriceCalculator.Domain.Services.Interfaces;
@@ -23,34 +24,29 @@ public sealed class Startup
     
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddMvc()
-            .AddMvcOptions(x =>
+        
+
+        services
+            .AddDomain(_configuration)
+            .AddInfrastructure()
+            .AddControllers()
+            .AddMvcOptions(ConfigureMvc)
+            .Services
+            .AddEndpointsApiExplorer()
+            .AddSwaggerGen(o =>
             {
-                x.Filters.Add(new ExceptionFilterAttribute());
-                x.Filters.Add(new ResponseTypeAttribute((int)HttpStatusCode.InternalServerError));
-                x.Filters.Add(new ResponseTypeAttribute((int)HttpStatusCode.BadRequest));
-                x.Filters.Add(new ProducesResponseTypeAttribute((int)HttpStatusCode.OK));
-            });
-        
-        services.Configure<PriceCalculatorOptions>(_configuration.GetSection("PriceCalculatorOptions"));
-        services.AddControllers();
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(o =>
-        {
-            o.CustomSchemaIds(x => x.FullName);
-        });
-        
-        services.AddScoped<IPriceCalculatorService, PriceCalculatorService>(x =>
-        {
-            var options = x.GetRequiredService<IOptionsSnapshot<PriceCalculatorOptions>>().Value;
-            return new PriceCalculatorService(options, x.GetRequiredService<IStorageRepository>());
-        });
-        services.AddScoped<IGoodPriceCalculatorService, GoodPriceCalculatorService>();
-        services.AddHostedService<GoodsSyncHostedService>();
-        services.AddSingleton<IStorageRepository, StorageRepository>();
-        services.AddSingleton<IGoodsRepository, GoodsRepository>();
-        services.AddScoped<IGoodsService, GoodsService>();
-        services.AddHttpContextAccessor();
+                o.CustomSchemaIds(x => x.FullName);
+            })
+            .AddHostedService<GoodsSyncHostedService>()
+            .AddHttpContextAccessor();
+    }
+    
+    private void ConfigureMvc(MvcOptions x)
+    {
+        x.Filters.Add(new ExceptionFilterAttribute());
+        x.Filters.Add(new ResponseTypeAttribute((int)HttpStatusCode.InternalServerError));
+        x.Filters.Add(new ResponseTypeAttribute((int)HttpStatusCode.BadRequest));
+        x.Filters.Add(new ProducesResponseTypeAttribute((int)HttpStatusCode.OK));
     }
 
     public void Configure(

@@ -1,9 +1,10 @@
 using Route256.PriceCalculator.Domain.Entities;
+using Route256.PriceCalculator.Domain.Separated;
 using Route256.PriceCalculator.Domain.Services.Interfaces;
 
-namespace Route256.PriceCalculator.Infrastructure;
+namespace Route256.PriceCalculator.Infrastructure.External;
 
-public sealed class GoodsService : IGoodsService
+internal sealed class GoodsService : IGoodsService
 {
     private readonly List<GoodModel> _goods = new()
     {

@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Route256.PriceCalculator.Do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Route256.PriceCalculator.Infrastructure", "src\Route256.PriceCalculator.Infrastructure\Route256.PriceCalculator.Infrastructure.csproj", "{FF0EEB5D-C548-4109-9779-F87703AFAB3C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Route256.PriceCalculator.Domain.DependencyInjection.Extensions", "src\Route256.PriceCalculator.Domain.DependencyInjection.Extensions\Route256.PriceCalculator.Domain.DependencyInjection.Extensions.csproj", "{63B2C1E7-54A6-488C-A442-AA2E740481C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,11 +41,20 @@ Global
 		{FF0EEB5D-C548-4109-9779-F87703AFAB3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF0EEB5D-C548-4109-9779-F87703AFAB3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF0EEB5D-C548-4109-9779-F87703AFAB3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63B2C1E7-54A6-488C-A442-AA2E740481C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63B2C1E7-54A6-488C-A442-AA2E740481C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63B2C1E7-54A6-488C-A442-AA2E740481C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63B2C1E7-54A6-488C-A442-AA2E740481C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A11AA2A-034C-42C0-89F9-A7EB29E5FCFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A11AA2A-034C-42C0-89F9-A7EB29E5FCFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A11AA2A-034C-42C0-89F9-A7EB29E5FCFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A11AA2A-034C-42C0-89F9-A7EB29E5FCFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DCF3DC7E-12C8-4D4D-A7D8-692AB788C5AB} = {2DC0D6FD-3FB0-4539-B5B1-22135384744C}
 		{517E9232-F4F6-4AC9-A478-86E13C489DCC} = {07872576-384C-49C7-A133-EDEFA74664F7}
 		{48B58C47-CC05-41C2-8715-24C9462B3904} = {2DC0D6FD-3FB0-4539-B5B1-22135384744C}
 		{FF0EEB5D-C548-4109-9779-F87703AFAB3C} = {2DC0D6FD-3FB0-4539-B5B1-22135384744C}
+		{63B2C1E7-54A6-488C-A442-AA2E740481C6} = {2DC0D6FD-3FB0-4539-B5B1-22135384744C}
 	EndGlobalSection
 EndGlobal

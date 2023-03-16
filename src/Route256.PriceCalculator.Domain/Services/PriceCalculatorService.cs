@@ -8,7 +8,7 @@ using Route256.PriceCalculator.Domain.Services.Interfaces;
 
 namespace Route256.PriceCalculator.Domain.Services;
 
-public class PriceCalculatorService : IPriceCalculatorService
+internal sealed class PriceCalculatorService : IPriceCalculatorService
 {
     private readonly decimal _volumeToPriceRatio;
     private readonly decimal _weightToPriceRatio;

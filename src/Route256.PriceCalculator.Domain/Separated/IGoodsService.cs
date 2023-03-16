@@ -1,7 +1,6 @@
-using System.Collections.Generic;
 using Route256.PriceCalculator.Domain.Entities;
 
-namespace Route256.PriceCalculator.Domain.Services.Interfaces;
+namespace Route256.PriceCalculator.Domain.Separated;
 
 public interface IGoodsService
 {

@@ -6,7 +6,7 @@ using Route256.PriceCalculator.Domain.Services.Interfaces;
 
 namespace Route256.PriceCalculator.Domain.Services;
 
-public sealed class GoodPriceCalculatorService : IGoodPriceCalculatorService
+internal sealed class GoodPriceCalculatorService : IGoodPriceCalculatorService
 {
     private readonly IGoodsRepository Repository;
     private readonly IPriceCalculatorService Service;

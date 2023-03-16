@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Route256.PriceCalculator.Domain.DependencyInjection.Extensions\Route256.PriceCalculator.Domain.DependencyInjection.Extensions.csproj" />
     <ProjectReference Include="..\Route256.PriceCalculator.Infrastructure\Route256.PriceCalculator.Infrastructure.csproj" />
   </ItemGroup>
 
