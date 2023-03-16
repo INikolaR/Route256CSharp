@@ -8,33 +8,33 @@ namespace Route256.PriceCalculator.Domain.Services;
 
 internal sealed class GoodPriceCalculatorService : IGoodPriceCalculatorService
 {
-    private readonly IGoodsRepository Repository;
-    private readonly IPriceCalculatorService Service;
+    private readonly IGoodsRepository _repository;
+    private readonly IPriceCalculatorService _service;
 
     public GoodPriceCalculatorService(
-        IGoodsRepository Repository,
-        IPriceCalculatorService Service)
+        IGoodsRepository repository,
+        IPriceCalculatorService service)
     {
-        this.Repository = Repository;
-        this.Service = Service;
+        _repository = repository;
+        _service = service;
     }
     
-    public decimal сalculatePrice(
-        int good_Id, 
-        decimal dstns)
+    public decimal CalculatePrice(
+        int goodId, 
+        decimal distance)
     {
-        if (good_Id == default)
-            throw new ArgumentException($"{nameof(good_Id)} is default");
+        if (goodId == default)
+            throw new ArgumentException($"{nameof(goodId)} is default");
         
-        if (dstns == default)
-            throw new ArgumentException($"{nameof(dstns)} is default");
+        if (distance == default)
+            throw new ArgumentException($"{nameof(distance)} is default");
         
-        var g = Repository.Get(good_Id);
-        var m = to_Model(g);
+        var goodEntity = _repository.Get(goodId);
+        var model = ToModel(goodEntity);
         
-        return Service.CalculatePrice(new []{ m }) * dstns;
+        return _service.CalculatePrice(new []{ model }) * distance;
     }
     
-    private static GoodModel to_Model(GoodEntity x) 
+    private static GoodModel ToModel(GoodEntity x) 
         => new(x.Height, x.Length, x.Width, x.Weight);
 }

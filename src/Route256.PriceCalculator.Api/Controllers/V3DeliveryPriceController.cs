@@ -42,7 +42,7 @@ public class V3DeliveryPriceController: Controller
     [HttpPost("good/calculate")]
     public Task<CalculateResponse> Calculate(GoodCalculateRequest request)
     {
-        var price = _goodPriceCalculatorService.сalculatePrice(request.GoodId, request.Distance);
+        var price = _goodPriceCalculatorService.CalculatePrice(request.GoodId, request.Distance);
 
         return Task.FromResult(new CalculateResponse(price));
     }
