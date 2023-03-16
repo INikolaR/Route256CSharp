@@ -2,6 +2,7 @@ using System.Net;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Route256.PriceCalculator.Domain.Exceptions;
 
 namespace Route256.PriceCalculator.Api.ActionFilters;
 
@@ -11,7 +12,7 @@ public sealed class ExceptionFilterAttribute: Attribute, IExceptionFilter
     {
         switch (context.Exception)
         {
-            case ValidationException exception:
+            case DomainException exception:
                 HandleBadRequest(context, exception);
                 return;
                 
@@ -30,7 +31,7 @@ public sealed class ExceptionFilterAttribute: Attribute, IExceptionFilter
         context.Result = jsonResult;
     }
 
-    private static void HandleBadRequest(ExceptionContext context, ValidationException exception)
+    private static void HandleBadRequest(ExceptionContext context, Exception exception)
     {
         var jsonResult = new JsonResult(
             new ErrorResponse(

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using Route256.PriceCalculator.Domain.Entities;
+using Route256.PriceCalculator.Domain.Exceptions;
 using Route256.PriceCalculator.Domain.Models.PriceCalculator;
 using Route256.PriceCalculator.Domain.Separated;
 using Route256.PriceCalculator.Domain.Services.Interfaces;
@@ -29,27 +30,37 @@ internal sealed class PriceCalculatorService : IPriceCalculatorService
     
     public decimal CalculatePrice(IReadOnlyList<GoodModel> goods)
     {
-        
+        try
+        {
+            var resultPrice = CalculateUnsave(goods);
+            return resultPrice;
+        }
+        catch(ValidationException e)
+        {
+            throw new DomainException("Incorrect input", e);
+        }
+        catch(DivideByZeroException e)
+        {
+            throw new DomainException("Incorrect input", e);
+        }
+    }
+
+    private decimal CalculateUnsave(IReadOnlyList<GoodModel> goods)
+    {
         var validator = new GoodsValidator();
         validator.ValidateAndThrow(goods);
-        
-        if (!goods.Any())
-        {
-            throw new ArgumentOutOfRangeException(nameof(goods));
-        }
 
         var volumePrice = CalculatePriceByVolume(goods, out var volume);
         var weightPrice = CalculatePriceByWeight(goods, out var weight);
 
         var resultPrice = Math.Max(volumePrice, weightPrice);
-        
+
         _storageRepository.Save(new StorageEntity(
             DateTime.UtcNow,
             volume,
             weight,
             0,
             resultPrice));
-
         return resultPrice;
     }
 
@@ -83,7 +94,7 @@ internal sealed class PriceCalculatorService : IPriceCalculatorService
         out decimal volume)
     {
         volume = goods
-            .Select(x => x.Height * x.Width * x.Height / 1000)
+            .Select(x => x.Height * x.Width * x.Length / 1000)
             .Sum();
 
         return volume * _volumeToPriceRatio;

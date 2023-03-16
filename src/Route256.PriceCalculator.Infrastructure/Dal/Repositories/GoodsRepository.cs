@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Route256.PriceCalculator.Domain.Entities;
 using Route256.PriceCalculator.Domain.Separated;
+using Route256.PriceCalculator.Infrastructure.Exceptions;
 
 namespace Route256.PriceCalculator.Infrastructure.Dal.Repositories;
 
@@ -22,5 +23,15 @@ public sealed class GoodsRepository : IGoodsRepository
         return _store.Select(x => x.Value).ToArray();
     }
 
-    public GoodEntity Get(int id) => _store[id];
+    public GoodEntity Get(int id)
+    {
+        try
+        {
+            return _store[id];
+        }
+        catch (KeyNotFoundException e)
+        {
+            throw new EntityNotFoundException("Not found", e);
+        }
+    }
 }

@@ -9,5 +9,7 @@ internal sealed class GoodsValidator: AbstractValidator<IReadOnlyCollection<Good
     {
         RuleForEach(x => x)
             .SetValidator(new GoodModelValidator());
+        RuleFor(x => x)
+            .Must(x => x.Any());
     }
 }

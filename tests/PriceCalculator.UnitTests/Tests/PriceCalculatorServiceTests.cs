@@ -4,14 +4,15 @@ using System.Linq;
 using AutoFixture;
 using Microsoft.Extensions.Options;
 using Moq;
-using Route256.PriceCalculator.Api.Bll;
-using Route256.PriceCalculator.Api.Bll.Models.PriceCalculator;
-using Route256.PriceCalculator.Api.Bll.Services;
-using Route256.PriceCalculator.Api.Dal.Entities;
-using Route256.PriceCalculator.Api.Dal.Repositories.Interfaces;
+using Route256.PriceCalculator.Domain;
+using Route256.PriceCalculator.Domain.Entities;
+using Route256.PriceCalculator.Domain.Exceptions;
+using Route256.PriceCalculator.Domain.Models.PriceCalculator;
+using Route256.PriceCalculator.Domain.Separated;
+using Route256.PriceCalculator.Domain.Services;
 using Xunit;
 
-namespace Workshop.UnitTests;
+namespace PriceCalculator.UnitTests.Tests;
 
 public class PriceCalculatorServiceTests
 {
@@ -21,11 +22,11 @@ public class PriceCalculatorServiceTests
         // Arrange
         var options = new PriceCalculatorOptions();
         var repositoryMock = new Mock<IStorageRepository>(MockBehavior.Default);
-        var cut = new PriceCalculatorService(CreateOptionsSnapshot(options), repositoryMock.Object);
+        var cut = new PriceCalculatorService(CreateOptionsSnapshot(options).Value, repositoryMock.Object);
         var goods = Array.Empty<GoodModel>();
 
         // Act, Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => cut.CalculatePrice(goods));
+        Assert.Throws<DomainException>(() => cut.CalculatePrice(goods));
     }
     
     [Fact]
@@ -39,7 +40,7 @@ public class PriceCalculatorServiceTests
         repositoryMock
             .Setup(x => x.Save(It.IsAny<StorageEntity>()))
             .Callback<StorageEntity>(x => storageEntity = x);
-        var cut = new PriceCalculatorService(CreateOptionsSnapshot(options), repositoryMock.Object);
+        var cut = new PriceCalculatorService(CreateOptionsSnapshot(options).Value, repositoryMock.Object);
         var goods = new Fixture().CreateMany<GoodModel>().ToArray();
 
         // Act
@@ -67,8 +68,8 @@ public class PriceCalculatorServiceTests
         };
 
         var repositoryMock = CreateRepositoryMock();
-        var cut = new PriceCalculatorService(CreateOptionsSnapshot(options), repositoryMock.Object);
-        var good = new GoodModel(10, 10, 10, 0);
+        var cut = new PriceCalculatorService(CreateOptionsSnapshot(options).Value, repositoryMock.Object);
+        var good = new GoodModel(10, 10, 10, 1);
 
         // Act
         var result = cut.CalculatePrice(new[] { good });
@@ -108,7 +109,7 @@ public class PriceCalculatorServiceTests
             VolumeToPriceRatio = 1, 
         };
         var repositoryMock = CreateRepositoryMock();
-        var cut = new PriceCalculatorService(CreateOptionsSnapshot(options), repositoryMock.Object);
+        var cut = new PriceCalculatorService(CreateOptionsSnapshot(options).Value, repositoryMock.Object);
         
         // Act
         var result = cut.CalculatePrice(goods);
@@ -122,14 +123,14 @@ public class PriceCalculatorServiceTests
     {
         yield return new object[]
         {
-            new GoodModel[] { new(10, 10, 10, 0), }, 1
+            new GoodModel[] { new(10, 10, 10, 1), }, 1
         };
 
         yield return new object[]
         {
             Enumerable
                 .Range(1, 2)
-                .Select(x => new GoodModel(10, 10, 10, 0))
+                .Select(x => new GoodModel(10, 10, 10, 1))
                 .ToArray(),
             2
         };
