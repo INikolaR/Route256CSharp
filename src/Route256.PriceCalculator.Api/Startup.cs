@@ -4,7 +4,6 @@ using Microsoft.Extensions.Options;
 using Route256.PriceCalculator.Api.ActionFilters;
 using Route256.PriceCalculator.Api.HostedServices;
 using Route256.PriceCalculator.Domain;
-using Route256.PriceCalculator.Domain.DependencyInjection.Extensions;
 using Route256.PriceCalculator.Domain.Separated;
 using Route256.PriceCalculator.Domain.Services;
 using Route256.PriceCalculator.Domain.Services.Interfaces;

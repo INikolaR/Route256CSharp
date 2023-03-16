@@ -5,7 +5,7 @@ using Route256.PriceCalculator.Domain.Separated;
 using Route256.PriceCalculator.Domain.Services;
 using Route256.PriceCalculator.Domain.Services.Interfaces;
 
-namespace Route256.PriceCalculator.Domain.DependencyInjection.Extensions;
+namespace Route256.PriceCalculator.Domain;
 
 public static class DomainServiceCollectionExstension
 {
