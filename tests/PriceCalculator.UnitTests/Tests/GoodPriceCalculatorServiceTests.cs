@@ -112,7 +112,7 @@ public class GoodPriceCalculatorServiceTests
     {
         var serviceMock = new Mock<IPriceCalculatorService>(MockBehavior.Default);
         serviceMock
-            .Setup(x => x.CalculatePrice(It.IsAny<CalculateRequest>()))
+            .Setup(x => x.CalculatePrice(It.IsAny<IReadOnlyList<GoodModel>>()))
             .Returns(() => 0);
         return serviceMock.Object;
     }
