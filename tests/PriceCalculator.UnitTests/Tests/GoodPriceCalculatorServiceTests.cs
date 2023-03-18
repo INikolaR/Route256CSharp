@@ -43,16 +43,6 @@ public class GoodPriceCalculatorServiceTests
         Assert.Throws<ArgumentException>(() => cut.CalculatePrice(goodId, distance));
     }
     
-    
-    
-    
-    
-    
-    
-    //==============================
-    
-    
-
     [Theory]
     [MemberData(nameof(CalcNotDefaultsMemberData))]
     public void PriceCalculatorService_WhenCalcNotDefaults_ShouldSuccess(
@@ -122,7 +112,7 @@ public class GoodPriceCalculatorServiceTests
     {
         var serviceMock = new Mock<IPriceCalculatorService>(MockBehavior.Default);
         serviceMock
-            .Setup(x => x)
+            .Setup(x => x.CalculatePrice(It.IsAny<CalculateRequest>()))
             .Returns(() => 0);
         return serviceMock.Object;
     }

@@ -6,7 +6,7 @@ using Route256.PriceCalculator.Infrastructure.External;
 
 namespace Route256.PriceCalculator.Infrastructure;
 
-public static class ServiceCollectionExstension
+public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
