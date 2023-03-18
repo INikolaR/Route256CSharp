@@ -1,6 +1,6 @@
 namespace Route256.PriceCalculator.Api;
 
-internal sealed class Program
+public sealed class Program
 {
     public static void Main()
     {
