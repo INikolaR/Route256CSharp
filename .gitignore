@@ -454,4 +454,4 @@ $RECYCLE.BIN/
 !.vscode/extensions.json
 
 # my custom config
-HW4/config.txt
+./HW4/config.txt
