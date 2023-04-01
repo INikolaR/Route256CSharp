@@ -38,7 +38,7 @@ public class CsvFileThreadTaskScheduler : TaskScheduler, IDisposable
         {
             if (stopFlag)
             {
-                Thread.CurrentThread.Abort();
+                Thread.CurrentThread.Interrupt();
             }
             if (_queue.TryTake(out Task task))
             {
