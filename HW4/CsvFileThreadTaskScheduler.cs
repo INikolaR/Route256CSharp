@@ -72,7 +72,7 @@ public class CsvFileThreadTaskScheduler : TaskScheduler, IDisposable
 
     public void ChangeNumberOfThreads(int numberOfThreads)
     {
-
+        stopFlag = true;
         lock (locker)
         {
             _numberOfThreads = numberOfThreads;
@@ -83,5 +83,6 @@ public class CsvFileThreadTaskScheduler : TaskScheduler, IDisposable
             }
             Console.WriteLine($"Number of threads: {_numberOfThreads}");
         }
+        stopFlag = false;
     }
 }
