@@ -49,9 +49,13 @@ public class ChannelPriceCalculator
                     {
                         Interlocked.Increment(ref NumberOfResultsCounted);
                         var good = Parse(line);
-                        await _outputChannel.Writer
-                            .WriteAsync(good.Id + ", " +
+                        var tryWrite = _outputChannel.Writer
+                            .TryWrite(good.Id + ", " +
                                         PriceCalculator.CalculatePrice(good).ToString(CultureInfo.InvariantCulture));
+                        if (tryWrite == false)
+                        {
+                            throw new Exception();
+                        }
                         Console.WriteLine("" +
                                           "Lines read:" + _reader.NumberOfLinesRead +
                                           " Results counted:" + NumberOfResultsCounted +
