@@ -10,9 +10,9 @@ public class CsvFileThreadTaskScheduler : TaskScheduler, IDisposable
 
     private int _numberOfThreads;
 
-    private List<Thread> _threads;
+    private Thread[] _threads;
 
-    private bool stopFlag = false;
+    private Dictionary<int, int> _indexes = new();
 
 
     public CsvFileThreadTaskScheduler(int numberOfThreads)
@@ -20,26 +20,19 @@ public class CsvFileThreadTaskScheduler : TaskScheduler, IDisposable
         if (numberOfThreads < 1)
             throw new ArgumentOutOfRangeException(nameof(numberOfThreads), "Must be at least 1");
         _numberOfThreads = numberOfThreads;
-        _threads = new List<Thread>(16);
+        _threads = new Thread[16];
         for (int i = 0; i < 16; i++)
         {
-            _threads.Add(new Thread(Run));
+            _threads[i] = new Thread(Run);
+            _indexes.Add(_threads[i].ManagedThreadId, i);
         }
-        for (int i = 0; i < _numberOfThreads; i++)
-        {
-            _threads[i].Start();
-        }
-        Console.WriteLine($"Number of threads: {_numberOfThreads}");
+        ChangeNumberOfThreads(_numberOfThreads);
     }
 
     private void Run()
     {
-        while (!_queue.IsCompleted)
+        while (!_queue.IsCompleted && _indexes[Thread.CurrentThread.ManagedThreadId] < _numberOfThreads)
         {
-            if (stopFlag)
-            {
-                Thread.CurrentThread.Interrupt();
-            }
             if (_queue.TryTake(out Task task))
             {
                 TryExecuteTask(task);
@@ -72,17 +65,20 @@ public class CsvFileThreadTaskScheduler : TaskScheduler, IDisposable
 
     public void ChangeNumberOfThreads(int numberOfThreads)
     {
-        stopFlag = true;
         lock (locker)
         {
             _numberOfThreads = numberOfThreads;
             for (int i = 0; i < _numberOfThreads; i++)
             {
-                _threads[i] = new Thread(Run);
-                _threads[i].Start();
+                if (_threads[i].ThreadState != ThreadState.Running)
+                {
+                    _indexes.Remove(_threads[i].ManagedThreadId);
+                    _threads[i] = new Thread(Run);
+                    _indexes.Add(_threads[i].ManagedThreadId, i);
+                    _threads[i].Start();
+                }
             }
             Console.WriteLine($"Number of threads: {_numberOfThreads}");
         }
-        stopFlag = false;
     }
 }

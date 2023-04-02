@@ -23,7 +23,7 @@ public class Program
         try
         {
             var numberOfThreads = int.Parse(File.ReadAllText(PathToConfig));
-            if (numberOfThreads is < 0 or > 16)
+            if (numberOfThreads is < 1 or > 16)
             {
                 throw new ArgumentException("Number of threads must be between 1 and 16");
             }
