@@ -5,17 +5,19 @@ namespace HW4;
 public class InputReader : IDisposable
 {
     private readonly Channel<string> _channel;
-    private readonly string _inputPath;
+    private readonly int _channelBound = 1000;
     private readonly StreamReader _reader;
 
     public int NumberOfLinesRead = 0;
 
-    public InputReader(Channel<string> channel, string inputPath)
-    {
-        _channel = channel;
-        _inputPath = inputPath;
+    public Channel<string> StreamChannel => _channel;
 
-        _reader = new StreamReader(_inputPath);
+    public InputReader(string inputPath)
+    {
+        // channel between input file and counter.
+        _channel = Channel.CreateBounded<string>(_channelBound);
+        
+        _reader = new StreamReader(inputPath);
     }
     
     private static async IAsyncEnumerable<string?> GetDataFromFile(StreamReader reader)

@@ -6,32 +6,31 @@ namespace HW4;
 
 public class Program
 {
-    private const string _inputPath = "../../../input.txt";
-    private const string _outputPath = "../../../output.txt";
+    private const string _inputFile = "input.txt";
+    private const string _outputFile = "output.txt";
     private static int _numberOfThreads;
-    private const string PathToConfig = "../../../config.txt";
+    private const string configFile = "config.txt";
     private const string PathToConfigFolder = "../../../";
-
-    public static event Action? ChangedProgressStatus; // if one of status counters changed.
 
     /// <summary>
     /// Reads config to set the number of threads.
     /// </summary>
     /// <returns></returns>
-    private static bool GetNumberOfThreadsFromConfig()
+    private static bool GetNumberOfThreadsFromConfig(string pathToConfig)
     {
         try
         {
-            var numberOfThreads = int.Parse(File.ReadAllText(PathToConfig));
+            var numberOfThreads = int.Parse(File.ReadAllText(pathToConfig));
             if (numberOfThreads is < 1 or > 16)
             {
                 throw new ArgumentException("Number of threads must be between 1 and 16");
             }
+
             _numberOfThreads = numberOfThreads;
         }
-        catch (ArgumentException)
+        catch (ArgumentException e)
         {
-            Console.WriteLine("Cannot access config file");
+            Console.WriteLine(e.Message);
             return false;
         }
         catch (FileNotFoundException)
@@ -55,7 +54,8 @@ public class Program
     
     public static async Task Main(string[] args)
     {
-        if (!GetNumberOfThreadsFromConfig())
+        string pathToConfig = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", configFile);
+        if (!GetNumberOfThreadsFromConfig(pathToConfig))
         {
             return;
         }
@@ -64,24 +64,19 @@ public class Program
         using var watcher = new FileSystemWatcher(PathToConfigFolder);
         watcher.Changed += (sender, eventArgs) =>
         {
-            if (GetNumberOfThreadsFromConfig())
+            if (GetNumberOfThreadsFromConfig(pathToConfig))
             {
                 scheduler.ChangeNumberOfThreads(_numberOfThreads);
             }
         };
         watcher.EnableRaisingEvents = true;
-        watcher.Filter = "config.txt";
-        
-        
-        
-        // channel between input file and counter.
-        var inputChannel = Channel.CreateBounded<string>(1000);
-        // channel between counter and output file.
-        var outputChannel = Channel.CreateBounded<string>(1000);
-        
-        using var reader = new InputReader(inputChannel, _inputPath);
-        using var writer = new OutputWriter(outputChannel, _outputPath);
-        var calculator = new ChannelPriceCalculator(inputChannel, outputChannel, scheduler, reader, writer);
+        watcher.Filter = configFile;
+
+        var inputPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", _inputFile);
+        var outputPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", _outputFile);
+        using var reader = new InputReader(inputPath);
+        using var writer = new OutputWriter(outputPath);
+        var calculator = new ChannelPriceCalculator(scheduler, reader, writer);
 
         await Task.WhenAll(reader.Start(), writer.Start(), calculator.Start());
     }

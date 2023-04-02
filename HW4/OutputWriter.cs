@@ -5,16 +5,19 @@ namespace HW4;
 public class OutputWriter : IDisposable
 {
     private readonly Channel<string> _channel;
-    private readonly string _outputPath;
+    private readonly int _channelBoud = 1000;
     private readonly StreamWriter _writer;
 
     public int NumberOfLinesWritten = 0;
+    
+    public Channel<string> StreamChannel => _channel;
 
-    public OutputWriter(Channel<string> channel, string outputPath)
+    public OutputWriter(string outputPath)
     {
-        _channel = channel;
-        _outputPath = outputPath;
-        _writer = new StreamWriter(_outputPath);
+        // channel between counter and output file.
+        _channel = Channel.CreateBounded<string>(_channelBoud);
+        
+        _writer = new StreamWriter(outputPath);
     }
 
     public async Task Start()
