@@ -70,4 +70,26 @@ select id
         return goods
             .ToArray();
     }
+
+    public async Task ClearHistory(
+        long[] goodIds,
+        CancellationToken token)
+    {
+        
+        const string sqlQuery = @"
+delete from goods
+where id = any(@GoodIds);
+";
+        var sqlQueryParams = new
+        {
+            GoodIds = goodIds
+        };
+
+        await using var connection = await GetAndOpenConnection();
+        var goods = await connection.QueryAsync(
+            new CommandDefinition(
+                sqlQuery,
+                sqlQueryParams,
+                cancellationToken: token));
+    }
 }

@@ -1,3 +1,4 @@
+using Route256.Week5.Homework.PriceCalculator.Bll.Commands;
 using Route256.Week5.Homework.PriceCalculator.Bll.Models;
 
 namespace Route256.Week5.Homework.PriceCalculator.Bll.Services.Interfaces;
@@ -18,5 +19,9 @@ public interface ICalculationService
 
     Task<QueryCalculationModel[]> QueryCalculations(
         QueryCalculationFilter query,
+        CancellationToken token);
+
+    Task<ClearHistoryResult> ClearHistory(
+        ClearHistoryCommand command,
         CancellationToken token);
 }

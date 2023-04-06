@@ -25,8 +25,6 @@
   <ItemGroup>
     <Folder Include="Extensions" />
     <Folder Include="NamingPolicies" />
-    <Folder Include="Requests\V1" />
-    <Folder Include="Responses\V1" />
     <Folder Include="Validators\V1" />
   </ItemGroup>
 

@@ -1,3 +1,4 @@
+using Route256.Week5.Homework.PriceCalculator.Bll.Commands;
 using Route256.Week5.Homework.PriceCalculator.Bll.Models;
 using Route256.Week5.Homework.PriceCalculator.Bll.Services.Interfaces;
 using Route256.Week5.Homework.PriceCalculator.Dal.Entities;
@@ -95,5 +96,33 @@ public class CalculationService : ICalculationService
                 x.Price,
                 x.GoodIds))
             .ToArray();
+    }
+    
+    public async Task<ClearHistoryResult> ClearHistory(
+        ClearHistoryCommand command,
+        CancellationToken token)
+    {
+        var clearAll = command.CalculationIds.Length == 0;
+        var connectedGoodIds = clearAll
+            ? await _calculationRepository.AllConnectedGoodIdsQuery(
+                command.UserId,
+                token)
+            : await _calculationRepository.ConnectedGoodIdsQuery(
+                command.UserId,
+                command.CalculationIds,
+                token);
+
+        using var transaction = _calculationRepository.CreateTransactionScope();
+        if (clearAll)
+        {
+            await _calculationRepository.ClearAllHistory(command.UserId, token);
+        }
+        else
+        {
+            await _calculationRepository.ClearHistory(command.UserId, command.CalculationIds, token);
+        }
+        await _goodsRepository.ClearHistory(connectedGoodIds, token);
+        transaction.Complete();
+        return new ClearHistoryResult();
     }
 }

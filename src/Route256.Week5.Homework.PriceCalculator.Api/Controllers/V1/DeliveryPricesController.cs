@@ -71,4 +71,21 @@ public class DeliveryPricesController : ControllerBase
                 x.Price))
             .ToArray();
     }
+    
+    /// <summary>
+        /// Метод удаления истории вычисления
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("clear-history")]
+        public async Task<ClearHistoryResponse> ClearHistory(
+            ClearHistoryRequest request,
+            CancellationToken ct)
+        {
+            var command = new ClearHistoryCommand(
+                request.UserId,
+                request.CalculationIds);
+            var result = await _mediator.Send(command, ct);
+
+            return new ClearHistoryResponse();
+        }
 }

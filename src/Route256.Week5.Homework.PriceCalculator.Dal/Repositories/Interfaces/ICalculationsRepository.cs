@@ -12,4 +12,22 @@ public interface ICalculationRepository : IDbRepository
     Task<CalculationEntityV1[]> Query(
         CalculationHistoryQueryModel query,
         CancellationToken token);
+
+    Task<long[]> ConnectedGoodIdsQuery(
+        long userId,
+        long[] calculationIds,
+        CancellationToken token);
+
+    Task ClearHistory(
+        long userId,
+        long[] calculationIds,
+        CancellationToken token);
+
+    Task<long[]> AllConnectedGoodIdsQuery(
+        long userId,
+        CancellationToken token);
+
+    Task ClearAllHistory(
+        long userId,
+        CancellationToken token);
 }
