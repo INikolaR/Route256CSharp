@@ -111,4 +111,27 @@ public class GoodsRepositoryTests
         // Assert
         foundGoods.Should().BeEmpty();
     }
+    
+    [Theory]
+    [InlineData(1, new long[] {1, 2, 3})]
+    [InlineData(5, new long[] {2, 3, 4})]
+    public async Task ClearHistory_Goods_Correct(int count, long[] goodIds)
+    {
+        // Arrange
+        var userId = Create.RandomId();
+        
+        var goods = GoodEntityV1Faker.Generate(count)
+            .Select(x => x.WithUserId(userId))
+            .ToArray();
+        await _goodsRepository.Add(goods, default);
+        var expected = (await _goodsRepository.Query(userId, default))
+                    .Where(x => !goodIds.Contains(x.Id)).ToArray();
+        
+        
+        // Act
+        await _goodsRepository.ClearHistory(goodIds, default);
+        var receivedGoods = await _goodsRepository.Query(userId, default);
+        // Asserts
+        receivedGoods.Should().BeEquivalentTo(expected);
+    }
 }

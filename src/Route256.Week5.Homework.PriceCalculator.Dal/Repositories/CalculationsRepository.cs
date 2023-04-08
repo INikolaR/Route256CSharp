@@ -78,8 +78,7 @@ select id
     }
     
     public async Task<long[]> ConnectedGoodIdsQuery(
-        long userId,
-        long[] calculationIds,
+        ClearHistoryCommandModel command,
         CancellationToken token)
     {
         const string sqlQuery = @"
@@ -90,8 +89,8 @@ select distinct unnest(good_ids)
         
         var sqlQueryParams = new
         {
-            UserId = userId,
-            CalculationIds = calculationIds
+            UserId = command.UserId,
+            CalculationIds = command.CalculationIds
         };
 
         await using var connection = await GetAndOpenConnection();
@@ -132,25 +131,18 @@ select distinct unnest(good_ids)
     }
 
     public async Task ClearHistory(
-        long userId,
-        long[] calculationIds,
+        ClearHistoryCommandModel command,
         CancellationToken token)
     {
         const string sqlQuery = @"
 delete from calculations
 where user_id = @UserId and id = any(@CalculationIds);
     ";
-        Console.WriteLine(userId);
-        foreach (var t in calculationIds)
-        {
-            Console.Write(t);
-        }
-        Console.WriteLine();
 
         var sqlQueryParams = new
         {
-            UserId = userId,
-            CalculationIds = calculationIds
+            UserId = command.UserId,
+            CalculationIds = command.CalculationIds
         };
 
         await using var connection = await GetAndOpenConnection();
@@ -180,5 +172,53 @@ where user_id = @UserId;
                 sqlQuery,
                 sqlQueryParams,
                 cancellationToken: token));
+    }
+
+    public async Task<long[]> CalculationsBelongToAnotherUser(
+        ClearHistoryCommandModel command,
+        CancellationToken token)
+    {
+        const string sqlQuery = @"
+select id from calculations
+where user_id != @UserId and id = any(@CalculationIds);
+    ";
+
+        var sqlQueryParams = new
+        {
+            UserId = command.UserId,
+            CalculationIds = command.CalculationIds
+        };
+
+        await using var connection = await GetAndOpenConnection();
+        var calculations = await connection.QueryAsync<long>(
+            new CommandDefinition(
+                sqlQuery,
+                sqlQueryParams,
+                cancellationToken: token));
+        return calculations.ToArray();
+    }
+    
+    public async Task<long[]> AbsentCalculations(
+        ClearHistoryCommandModel command,
+        CancellationToken token)
+    {
+        const string sqlQuery = @"
+select unnest from unnest(@CalculationIds)
+where not exists (select id, user_id from calculations where unnest = id and user_id = @UserId);
+    ";
+
+        var sqlQueryParams = new
+        {
+            UserId = command.UserId,
+            CalculationIds = command.CalculationIds
+        };
+
+        await using var connection = await GetAndOpenConnection();
+        var calculations = await connection.QueryAsync<long>(
+            new CommandDefinition(
+                sqlQuery,
+                sqlQueryParams,
+                cancellationToken: token));
+        return calculations.ToArray();
     }
 }

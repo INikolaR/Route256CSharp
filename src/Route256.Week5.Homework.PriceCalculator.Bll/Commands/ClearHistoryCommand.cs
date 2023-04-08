@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Route256.Week5.Homework.PriceCalculator.Bll.Exceptions;
 using Route256.Week5.Homework.PriceCalculator.Bll.Models;
 using Route256.Week5.Homework.PriceCalculator.Bll.Services.Interfaces;
 
@@ -22,6 +23,18 @@ public class ClearHistoryCommandHandler
         ClearHistoryCommand request,
         CancellationToken cancellationToken)
     {
+        var anotherUsersCalculations =
+            await _calculationService.CalculationsBelongToAnotherUser(request, cancellationToken);
+        if (anotherUsersCalculations.Length != 0)
+        {
+            throw new OneOrManyCalculationsBelongsToAnotherUserException(anotherUsersCalculations);
+        }
+        var absentCalculations = 
+            await _calculationService.AbsentCalculations(request, cancellationToken);
+        if (absentCalculations.Length != 0)
+        {
+            throw new OneOrManyCalculationsNotFoundException();
+        }
         await _calculationService.ClearHistory(request, cancellationToken);
         return new ClearHistoryResult();
     }

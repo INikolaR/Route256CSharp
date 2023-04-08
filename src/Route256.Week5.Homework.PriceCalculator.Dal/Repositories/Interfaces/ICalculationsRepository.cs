@@ -14,13 +14,11 @@ public interface ICalculationRepository : IDbRepository
         CancellationToken token);
 
     Task<long[]> ConnectedGoodIdsQuery(
-        long userId,
-        long[] calculationIds,
+        ClearHistoryCommandModel command,
         CancellationToken token);
 
     Task ClearHistory(
-        long userId,
-        long[] calculationIds,
+        ClearHistoryCommandModel command,
         CancellationToken token);
 
     Task<long[]> AllConnectedGoodIdsQuery(
@@ -29,5 +27,13 @@ public interface ICalculationRepository : IDbRepository
 
     Task ClearAllHistory(
         long userId,
+        CancellationToken token);
+
+    Task<long[]> CalculationsBelongToAnotherUser(
+        ClearHistoryCommandModel command,
+        CancellationToken token);
+
+    Task<long[]> AbsentCalculations(
+        ClearHistoryCommandModel command,
         CancellationToken token);
 }

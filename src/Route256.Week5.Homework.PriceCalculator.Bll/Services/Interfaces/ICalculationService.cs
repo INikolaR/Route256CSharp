@@ -24,4 +24,12 @@ public interface ICalculationService
     Task<ClearHistoryResult> ClearHistory(
         ClearHistoryCommand command,
         CancellationToken token);
+
+    Task<long[]> CalculationsBelongToAnotherUser(
+        ClearHistoryCommand command,
+        CancellationToken token);
+
+    Task<long[]> AbsentCalculations(
+        ClearHistoryCommand command,
+        CancellationToken token);
 }

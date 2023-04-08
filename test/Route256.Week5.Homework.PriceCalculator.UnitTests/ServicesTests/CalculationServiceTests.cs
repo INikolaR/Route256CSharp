@@ -1,19 +1,30 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
+using AutoBogus;
 using FluentAssertions;
 using Route256.Week5.Homework.PriceCalculator.Bll.Services;
+using Route256.Week5.Homework.PriceCalculator.Dal.Models;
 using Route256.Week5.Homework.PriceCalculator.UnitTests.Builders;
 using Route256.Week5.Homework.PriceCalculator.UnitTests.Extensions;
 using Route256.Week5.Homework.PriceCalculator.UnitTests.Fakers;
 using Route256.Week5.Homework.TestingInfrastructure.Creators;
 using Route256.Week5.Homework.TestingInfrastructure.Fakers;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Route256.Week5.Homework.PriceCalculator.UnitTests.ServicesTests;
 
 public class CalculationServiceTests
 {
+    private readonly ITestOutputHelper _testOutputHelper;
+
+    public CalculationServiceTests(ITestOutputHelper testOutputHelper)
+    {
+        _testOutputHelper = testOutputHelper;
+    }
+
     [Fact]
     public async Task SaveCalculation_Success()
     {
@@ -150,5 +161,106 @@ public class CalculationServiceTests
             .Should().IntersectWith(calculations.Select(x => x.TotalVolume));
         result.Select(x => x.Price)
             .Should().IntersectWith(calculations.Select(x => x.Price));
+    }
+    
+    [Fact]
+    public async Task ClearHistory_Service_Success()
+    {
+        // arrange
+        var userId = Create.RandomId();
+        Random r = new Random();
+        var numberOfElems = r.Next(1, 10);
+        var calculationIds = new long[numberOfElems];
+        for (int i = 0; i < numberOfElems; i++)
+        {
+            calculationIds[i] = Create.RandomId();
+        }
+
+        var command = ClearHistoryCommandFaker.Generate()
+            .WithUserId(userId)
+            .WithCalculationIds(calculationIds);
+
+        var builder = new CalculationServiceBuilder();
+        builder.CalculationRepository
+            .SetupClearHistory()
+            .SetupCreateTransactionScope();
+        builder.GoodsRepository
+            .SetupClearHistory();
+        var service = builder.Build();
+
+        //act
+        await service.ClearHistory(command, default);
+
+        //asserts
+        service.CalculationRepository
+            .VerifyClearHistoryWasCalledOnce(
+                new ClearHistoryCommandModel(command.UserId, command.CalculationIds));
+
+    }
+    
+    [Fact]
+    public async Task CalculationsBelongToAnotherUser_Service_Success()
+    {
+        // arrange
+        var userId = Create.RandomId();
+        Random r = new Random();
+        var numberOfElems = r.Next(1, 10);
+        var calculationIds = new long[numberOfElems];
+        for (int i = 0; i < numberOfElems; i++)
+        {
+            calculationIds[i] = Create.RandomId();
+        }
+
+        var command = ClearHistoryCommandFaker.Generate()
+            .WithUserId(userId)
+            .WithCalculationIds(calculationIds);
+
+        var builder = new CalculationServiceBuilder();
+        builder.CalculationRepository
+            .SetupCalculationsBelongToAnotherUser(calculationIds)
+            .SetupCreateTransactionScope();
+        var service = builder.Build();
+
+        //act
+        await service.CalculationsBelongToAnotherUser(command, default);
+
+        //asserts
+        service.CalculationRepository
+            .VerifyCalculationsBelongToAnotherUserWasCalledOnce(
+                new ClearHistoryCommandModel(command.UserId, command.CalculationIds));
+
+    }
+    
+    [Fact]
+    public async Task AbsentCalculations_Service_Success()
+    {
+        // arrange
+        var userId = Create.RandomId();
+        Random r = new Random();
+        var numberOfElems = r.Next(1, 10);
+        var calculationIds = new long[numberOfElems];
+        for (int i = 0; i < numberOfElems; i++)
+        {
+            calculationIds[i] = Create.RandomId();
+        }
+
+        var command = ClearHistoryCommandFaker.Generate()
+            .WithUserId(userId)
+            .WithCalculationIds(calculationIds);
+
+        var builder = new CalculationServiceBuilder();
+        builder.CalculationRepository
+            .SetupAbsentCalculations(calculationIds)
+            .SetupCreateTransactionScope();
+        var service = builder.Build();
+
+        //act
+        await service.AbsentCalculations(command, default);
+
+        //asserts
+        service.CalculationRepository
+            .VerifyAbsentCalculationsWasCalledOnce(
+                new ClearHistoryCommandModel(command.UserId, command.CalculationIds));
+
     }
 }

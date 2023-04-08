@@ -11,6 +11,7 @@ public static class CalculationEntityV1Faker
     private static readonly Faker<CalculationEntityV1> Faker = new AutoFaker<CalculationEntityV1>()
         .RuleFor(x => x.Id, f => f.Random.Long(0L))
         .RuleFor(x => x.UserId, f => f.Random.Long(0L))
+        .RuleFor(x => x.GoodIds, f => f.Random.ArrayElements(new long[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}))
         .RuleFor(x => x.Price, f => f.Random.Decimal())
         .RuleFor(x => x.TotalVolume, f => f.Random.Double())
         .RuleFor(x => x.TotalWeight, f => f.Random.Double());
@@ -21,6 +22,19 @@ public static class CalculationEntityV1Faker
         {
             return Enumerable.Repeat(Faker.Generate(), count)
                 .ToArray();
+        }
+    }
+    
+    public static CalculationEntityV1[] GenerateWithIds(long[] ids)
+    {
+        lock (Lock)
+        {
+            var data = new CalculationEntityV1[ids.Length];
+            for (int i = 0; i < ids.Length; i++)
+            {
+                data[i] = Faker.Generate().WithId(ids[i]);
+            }
+            return data.ToArray();
         }
     }
 

@@ -108,8 +108,7 @@ public class CalculationService : ICalculationService
                 command.UserId,
                 token)
             : await _calculationRepository.ConnectedGoodIdsQuery(
-                command.UserId,
-                command.CalculationIds,
+                new ClearHistoryCommandModel(command.UserId, command.CalculationIds),
                 token);
 
         using var transaction = _calculationRepository.CreateTransactionScope();
@@ -119,10 +118,32 @@ public class CalculationService : ICalculationService
         }
         else
         {
-            await _calculationRepository.ClearHistory(command.UserId, command.CalculationIds, token);
+            await _calculationRepository.ClearHistory(
+                new ClearHistoryCommandModel(command.UserId, command.CalculationIds),
+                token);
         }
         await _goodsRepository.ClearHistory(connectedGoodIds, token);
         transaction.Complete();
         return new ClearHistoryResult();
+    }
+
+    public async Task<long[]> CalculationsBelongToAnotherUser(
+        ClearHistoryCommand command,
+        CancellationToken token)
+    {
+        var result =  await _calculationRepository.CalculationsBelongToAnotherUser(
+            new ClearHistoryCommandModel(command.UserId, command.CalculationIds),
+            token);
+        return result;
+    }
+    
+    public async Task<long[]> AbsentCalculations(
+        ClearHistoryCommand command,
+        CancellationToken token)
+    {
+        var result =  await _calculationRepository.AbsentCalculations(
+            new ClearHistoryCommandModel(command.UserId, command.CalculationIds),
+            token);
+        return result;
     }
 }

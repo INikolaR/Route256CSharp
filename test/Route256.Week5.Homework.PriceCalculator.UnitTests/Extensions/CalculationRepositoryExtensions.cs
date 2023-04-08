@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Transactions;
 using Moq;
+using Route256.Week5.Homework.PriceCalculator.Bll.Commands;
 using Route256.Week5.Homework.PriceCalculator.Dal.Entities;
 using Route256.Week5.Homework.PriceCalculator.Dal.Models;
 using Route256.Week5.Homework.PriceCalculator.Dal.Repositories.Interfaces;
@@ -44,7 +45,50 @@ public static class CalculationRepositoryExtensions
 
         return repository;
     }
+    
+    public static Mock<ICalculationRepository> SetupClearHistory(
+        this Mock<ICalculationRepository> repository)
+    {
+        repository.Setup(p =>
+                p.ClearHistory(It.IsAny<ClearHistoryCommandModel>(), 
+                    It.IsAny<CancellationToken>()));
 
+        return repository;
+    }
+    
+    public static Mock<ICalculationRepository> SetupCalculationsBelongToAnotherUser(
+        this Mock<ICalculationRepository> repository,
+        long[] ids)
+    {
+        repository.Setup(p =>
+            p.CalculationsBelongToAnotherUser(It.IsAny<ClearHistoryCommandModel>(), 
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(ids);
+
+        return repository;
+    }
+    
+    public static Mock<ICalculationRepository> SetupAbsentCalculations(
+        this Mock<ICalculationRepository> repository,
+        long[] ids)
+    {
+        repository.Setup(p =>
+                p.AbsentCalculations(It.IsAny<ClearHistoryCommandModel>(), 
+                    It.IsAny<CancellationToken>()))
+            .ReturnsAsync(ids);
+
+        return repository;
+    }
+
+    public static Mock<IGoodsRepository> SetupClearHistory(
+        this Mock<IGoodsRepository> repository)
+    {
+        repository.Setup(p =>
+            p.ClearHistory(It.IsAny<long[]>(), 
+                It.IsAny<CancellationToken>()));
+
+        return repository;
+    }
     public static Mock<ICalculationRepository> VerifyAddWasCalledOnce(
         this Mock<ICalculationRepository> repository,
         CalculationEntityV1[] calculations)
@@ -78,6 +122,58 @@ public static class CalculationRepositoryExtensions
         repository.Verify(p =>
                 p.CreateTransactionScope(
                     It.Is<IsolationLevel>(x => x == isolationLevel)),
+            Times.Once);
+        
+        return repository;
+    }
+    
+    public static Mock<ICalculationRepository> VerifyClearHistoryWasCalledOnce(
+        this Mock<ICalculationRepository> repository,
+        ClearHistoryCommandModel command)
+    {
+        repository.Verify(p =>
+                p.ClearHistory(
+                    It.Is<ClearHistoryCommandModel>(x => x == command),
+                    It.IsAny<CancellationToken>()),
+            Times.Once);
+        
+        return repository;
+    }
+    
+    public static Mock<IGoodsRepository> VerifyClearHistoryWasCalledOnce(
+        this Mock<IGoodsRepository> repository,
+        long[] calculationIds)
+    {
+        repository.Verify(p =>
+                p.ClearHistory(
+                    It.Is<long[]>(x => x.SequenceEqual(calculationIds)),
+                    It.IsAny<CancellationToken>()),
+            Times.Once);
+        
+        return repository;
+    }
+    
+    public static Mock<ICalculationRepository> VerifyCalculationsBelongToAnotherUserWasCalledOnce(
+        this Mock<ICalculationRepository> repository,
+        ClearHistoryCommandModel model)
+    {
+        repository.Verify(p =>
+                p.CalculationsBelongToAnotherUser(
+                    It.Is<ClearHistoryCommandModel>(x => x == model),
+                    It.IsAny<CancellationToken>()),
+            Times.Once);
+        
+        return repository;
+    }
+    
+    public static Mock<ICalculationRepository> VerifyAbsentCalculationsWasCalledOnce(
+        this Mock<ICalculationRepository> repository,
+        ClearHistoryCommandModel model)
+    {
+        repository.Verify(p =>
+                p.CalculationsBelongToAnotherUser(
+                    It.Is<ClearHistoryCommandModel>(x => x == model),
+                    It.IsAny<CancellationToken>()),
             Times.Once);
         
         return repository;
