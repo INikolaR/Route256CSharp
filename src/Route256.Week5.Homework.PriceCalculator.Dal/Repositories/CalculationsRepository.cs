@@ -202,8 +202,9 @@ where user_id != @UserId and id = any(@CalculationIds);
         CancellationToken token)
     {
         const string sqlQuery = @"
-select unnest from unnest(@CalculationIds)
-where not exists (select id, user_id from calculations where unnest = id and user_id = @UserId);
+select unnest from calculations
+right join unnest(@CalculationIds) on unnest = calculations.id
+where calculations.id is null;
     ";
 
         var sqlQueryParams = new
