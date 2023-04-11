@@ -18,7 +18,7 @@ public interface ICalculationRepository : IDbRepository
         CancellationToken token);
 
     Task ClearHistory(
-        ClearHistoryCommandModel command,
+        long[] calculationIds,
         CancellationToken token);
 
     Task<long[]> AllConnectedGoodIdsQuery(

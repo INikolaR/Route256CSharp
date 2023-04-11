@@ -131,18 +131,17 @@ select distinct unnest(good_ids)
     }
 
     public async Task ClearHistory(
-        ClearHistoryCommandModel command,
+        long[] calculationIds,
         CancellationToken token)
     {
         const string sqlQuery = @"
 delete from calculations
-where user_id = @UserId and id = any(@CalculationIds);
+where id = any(@CalculationIds);
     ";
 
         var sqlQueryParams = new
         {
-            UserId = command.UserId,
-            CalculationIds = command.CalculationIds
+            CalculationIds = calculationIds
         };
 
         await using var connection = await GetAndOpenConnection();

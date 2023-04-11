@@ -22,14 +22,26 @@ public interface ICalculationService
         CancellationToken token);
 
     Task<ClearHistoryResult> ClearHistory(
-        ClearHistoryCommand command,
+        ClearHistoryModel command,
+        CancellationToken token);
+
+    Task<ClearHistoryResult> ClearAllHistory(
+        ClearAllHistoryModel model,
         CancellationToken token);
 
     Task<long[]> CalculationsBelongToAnotherUser(
-        ClearHistoryCommand command,
+        QueryModel model,
         CancellationToken token);
 
     Task<long[]> AbsentCalculations(
-        ClearHistoryCommand command,
+        QueryModel model,
+        CancellationToken token);
+
+    Task<long[]> AllConnectedGoodIdsQuery(
+        long userId,
+        CancellationToken token);
+
+    Task<long[]> ConnectedGoodIdsQuery(
+        QueryModel model,
         CancellationToken token);
 }

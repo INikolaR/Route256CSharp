@@ -67,8 +67,42 @@ public static class CalculationServiceExtensions
         this Mock<ICalculationService> repository)
     {
         repository.Setup(p =>
-            p.ClearHistory(It.IsAny<ClearHistoryCommand>(), 
+            p.ClearHistory(It.IsAny<ClearHistoryModel>(), 
                 It.IsAny<CancellationToken>()));
+
+        return repository;
+    }
+    
+    public static Mock<ICalculationService> SetupClearAllHistory(
+        this Mock<ICalculationService> repository)
+    {
+        repository.Setup(p =>
+            p.ClearAllHistory(It.IsAny<ClearAllHistoryModel>(), 
+                It.IsAny<CancellationToken>()));
+
+        return repository;
+    }
+    
+    public static Mock<ICalculationService> SetupConnectedGoodIdsQuery(
+        this Mock<ICalculationService> repository,
+        long[] connectedGoodIds)
+    {
+        repository.Setup(p =>
+            p.ConnectedGoodIdsQuery(It.IsAny<QueryModel>(), 
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(connectedGoodIds);
+
+        return repository;
+    }
+    
+    public static Mock<ICalculationService> SetupAllConnectedGoodIdsQuery(
+        this Mock<ICalculationService> repository,
+        long[] connectedGoodIds)
+    {
+        repository.Setup(p =>
+                p.AllConnectedGoodIdsQuery(It.IsAny<long>(), 
+                    It.IsAny<CancellationToken>()))
+            .ReturnsAsync(connectedGoodIds);
 
         return repository;
     }
@@ -78,7 +112,7 @@ public static class CalculationServiceExtensions
         long[] ids)
     {
         repository.Setup(p =>
-                p.CalculationsBelongToAnotherUser(It.IsAny<ClearHistoryCommand>(), 
+                p.CalculationsBelongToAnotherUser(It.IsAny<QueryModel>(), 
                     It.IsAny<CancellationToken>()))
             .ReturnsAsync(ids);
 
@@ -90,7 +124,7 @@ public static class CalculationServiceExtensions
         long[] ids)
     {
         repository.Setup(p =>
-                p.CalculationsBelongToAnotherUser(It.IsAny<ClearHistoryCommand>(), 
+                p.CalculationsBelongToAnotherUser(It.IsAny<QueryModel>(), 
                     It.IsAny<CancellationToken>()))
             .ThrowsAsync(new OneOrManyCalculationsBelongsToAnotherUserException(Array.Empty<long>()));
 
@@ -102,7 +136,7 @@ public static class CalculationServiceExtensions
         long[] ids)
     {
         repository.Setup(p =>
-                p.AbsentCalculations(It.IsAny<ClearHistoryCommand>(), 
+                p.AbsentCalculations(It.IsAny<QueryModel>(), 
                     It.IsAny<CancellationToken>()))
             .ReturnsAsync(ids);
 
@@ -114,7 +148,7 @@ public static class CalculationServiceExtensions
         long[] ids)
     {
         repository.Setup(p =>
-                p.AbsentCalculations(It.IsAny<ClearHistoryCommand>(), 
+                p.AbsentCalculations(It.IsAny<QueryModel>(), 
                     It.IsAny<CancellationToken>()))
             .ThrowsAsync(new OneOrManyCalculationsNotFoundException());
 
@@ -175,11 +209,49 @@ public static class CalculationServiceExtensions
     
     public static Mock<ICalculationService> VerifyClearHistoryWasCalledOnce(
         this Mock<ICalculationService> repository,
-        ClearHistoryCommand command)
+        ClearHistoryModel model)
     {
         repository.Verify(p =>
                 p.ClearHistory(
-                    It.Is<ClearHistoryCommand>(x => x == command),
+                    It.Is<ClearHistoryModel>(x => x == model),
+                    It.IsAny<CancellationToken>()),
+            Times.Once);
+        
+        return repository;
+    }
+    
+    public static Mock<ICalculationService> VerifyConnectedGoodIdsQueryWasCalledOnce(
+        this Mock<ICalculationService> repository,
+        QueryModel model)
+    {
+        repository.Verify(p =>
+                p.ConnectedGoodIdsQuery(
+                    It.Is<QueryModel>(x => x == model),
+                    It.IsAny<CancellationToken>()),
+            Times.Once);
+        
+        return repository;
+    }
+    public static Mock<ICalculationService> VerifyAllConnectedGoodIdsQueryWasCalledOnce(
+        this Mock<ICalculationService> repository,
+        long userId)
+    {
+        repository.Verify(p =>
+                p.AllConnectedGoodIdsQuery(
+                    It.Is<long>(x => x == userId),
+                    It.IsAny<CancellationToken>()),
+            Times.Once);
+        
+        return repository;
+    }
+    
+    public static Mock<ICalculationService> VerifyClearAllHistoryWasCalledOnce(
+        this Mock<ICalculationService> repository,
+        ClearAllHistoryModel model)
+    {
+        repository.Verify(p =>
+                p.ClearAllHistory(
+                    It.Is<ClearAllHistoryModel>(x => x == model),
                     It.IsAny<CancellationToken>()),
             Times.Once);
         
@@ -188,11 +260,11 @@ public static class CalculationServiceExtensions
     
     public static Mock<ICalculationService> VerifyCalculationsBelongToAnotherUserWasCalledOnce(
         this Mock<ICalculationService> repository,
-        ClearHistoryCommand model)
+        QueryModel model)
     {
         repository.Verify(p =>
                 p.CalculationsBelongToAnotherUser(
-                    It.Is<ClearHistoryCommand>(x => x == model),
+                    It.Is<QueryModel>(x => x == model),
                     It.IsAny<CancellationToken>()),
             Times.Once);
         
@@ -201,11 +273,11 @@ public static class CalculationServiceExtensions
     
     public static Mock<ICalculationService> VerifyAbsentCalculationsWasCalledOnce(
         this Mock<ICalculationService> repository,
-        ClearHistoryCommand model)
+        QueryModel model)
     {
         repository.Verify(p =>
                 p.CalculationsBelongToAnotherUser(
-                    It.Is<ClearHistoryCommand>(x => x == model),
+                    It.Is<QueryModel>(x => x == model),
                     It.IsAny<CancellationToken>()),
             Times.Once);
         

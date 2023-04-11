@@ -3,6 +3,7 @@ using System.Threading;
 using System.Transactions;
 using Moq;
 using Route256.Week5.Homework.PriceCalculator.Bll.Commands;
+using Route256.Week5.Homework.PriceCalculator.Bll.Models;
 using Route256.Week5.Homework.PriceCalculator.Dal.Entities;
 using Route256.Week5.Homework.PriceCalculator.Dal.Models;
 using Route256.Week5.Homework.PriceCalculator.Dal.Repositories.Interfaces;
@@ -50,7 +51,7 @@ public static class CalculationRepositoryExtensions
         this Mock<ICalculationRepository> repository)
     {
         repository.Setup(p =>
-                p.ClearHistory(It.IsAny<ClearHistoryCommandModel>(), 
+                p.ClearHistory(It.IsAny<long[]>(), 
                     It.IsAny<CancellationToken>()));
 
         return repository;
@@ -129,11 +130,11 @@ public static class CalculationRepositoryExtensions
     
     public static Mock<ICalculationRepository> VerifyClearHistoryWasCalledOnce(
         this Mock<ICalculationRepository> repository,
-        ClearHistoryCommandModel command)
+        long[] calculationIds)
     {
         repository.Verify(p =>
                 p.ClearHistory(
-                    It.Is<ClearHistoryCommandModel>(x => x == command),
+                    It.Is<long[]>(x => x.SequenceEqual(calculationIds)),
                     It.IsAny<CancellationToken>()),
             Times.Once);
         

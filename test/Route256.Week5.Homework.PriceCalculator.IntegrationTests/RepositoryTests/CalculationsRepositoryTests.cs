@@ -242,13 +242,11 @@ public class CalculationsRepositoryTests
         foundCalculations.Should().BeEquivalentTo(expected);
     }
     
-    [Theory]
-    [InlineData(1, new long[] {2, 3, 4})]
-    [InlineData(2, new long[] {1, 3, 5})]
-    [InlineData(3, new long[] {2, 3, 4, 10})]
-    public async Task ClearHistory_Calculations_Correct(int userId, long[] calculationIds)
+    [Fact]
+    public async Task ClearHistory_Calculations_Correct()
     {
         // Arrange
+        var userId = Create.RandomId();
         var now = DateTimeOffset.UtcNow;
         var calculations = CalculationEntityV1Faker.Generate(5)
             .Select(x => x.WithUserId(userId).WithAt(now))
@@ -259,12 +257,17 @@ public class CalculationsRepositoryTests
         var allCalculations = await _calculationRepository.Query(
             new CalculationHistoryQueryModel(userId, 100, 0), 
             default);
+        var random = new Random();
+        var calculationIds = allCalculations
+            .Where(x => random.Next() % 2 == 0)
+                .Select(c => c.Id)
+            .ToArray();
 
         var filteredCalculations = allCalculations
             .Where(x => !calculationIds.Contains(x.Id)).ToArray();
         var expected = filteredCalculations;
         // Act
-        await _calculationRepository.ClearHistory(new ClearHistoryCommandModel(userId, calculationIds), default);
+        await _calculationRepository.ClearHistory(calculationIds, default);
         var foundCalculations =
             await _calculationRepository.Query(
                 new CalculationHistoryQueryModel(userId, 100, 0),

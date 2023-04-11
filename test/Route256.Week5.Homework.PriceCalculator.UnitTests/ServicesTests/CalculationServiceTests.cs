@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using AutoBogus;
 using FluentAssertions;
+using Route256.Week5.Homework.PriceCalculator.Bll.Models;
 using Route256.Week5.Homework.PriceCalculator.Bll.Services;
 using Route256.Week5.Homework.PriceCalculator.Dal.Models;
 using Route256.Week5.Homework.PriceCalculator.UnitTests.Builders;
@@ -167,17 +168,18 @@ public class CalculationServiceTests
     public async Task ClearHistory_Service_Success()
     {
         // arrange
-        var userId = Create.RandomId();
         Random r = new Random();
         var numberOfElems = r.Next(1, 10);
         var calculationIds = new long[numberOfElems];
+        var connectedGoodIds = new long[numberOfElems];
         for (int i = 0; i < numberOfElems; i++)
         {
             calculationIds[i] = Create.RandomId();
+            connectedGoodIds[i] = Create.RandomId();
         }
 
-        var command = ClearHistoryCommandFaker.Generate()
-            .WithUserId(userId)
+        var model = ClearHistoryModelFaker.Generate()
+            .WithConnectedGoodIds(connectedGoodIds)
             .WithCalculationIds(calculationIds);
 
         var builder = new CalculationServiceBuilder();
@@ -189,12 +191,11 @@ public class CalculationServiceTests
         var service = builder.Build();
 
         //act
-        await service.ClearHistory(command, default);
+        await service.ClearHistory(model, default);
 
         //asserts
         service.CalculationRepository
-            .VerifyClearHistoryWasCalledOnce(
-                new ClearHistoryCommandModel(command.UserId, command.CalculationIds));
+            .VerifyClearHistoryWasCalledOnce(model.CalculationIds);
 
     }
     
@@ -211,7 +212,7 @@ public class CalculationServiceTests
             calculationIds[i] = Create.RandomId();
         }
 
-        var command = ClearHistoryCommandFaker.Generate()
+        var model = QueryModelFaker.Generate()
             .WithUserId(userId)
             .WithCalculationIds(calculationIds);
 
@@ -222,12 +223,12 @@ public class CalculationServiceTests
         var service = builder.Build();
 
         //act
-        await service.CalculationsBelongToAnotherUser(command, default);
+        await service.CalculationsBelongToAnotherUser(model, default);
 
         //asserts
         service.CalculationRepository
             .VerifyCalculationsBelongToAnotherUserWasCalledOnce(
-                new ClearHistoryCommandModel(command.UserId, command.CalculationIds));
+                new ClearHistoryCommandModel(model.UserId, model.CalculationIds));
 
     }
     
@@ -244,7 +245,7 @@ public class CalculationServiceTests
             calculationIds[i] = Create.RandomId();
         }
 
-        var command = ClearHistoryCommandFaker.Generate()
+        var model = QueryModelFaker.Generate()
             .WithUserId(userId)
             .WithCalculationIds(calculationIds);
 
@@ -255,12 +256,12 @@ public class CalculationServiceTests
         var service = builder.Build();
 
         //act
-        await service.AbsentCalculations(command, default);
+        await service.AbsentCalculations(model, default);
 
         //asserts
         service.CalculationRepository
             .VerifyAbsentCalculationsWasCalledOnce(
-                new ClearHistoryCommandModel(command.UserId, command.CalculationIds));
+                new ClearHistoryCommandModel(model.UserId, model.CalculationIds));
 
     }
 }

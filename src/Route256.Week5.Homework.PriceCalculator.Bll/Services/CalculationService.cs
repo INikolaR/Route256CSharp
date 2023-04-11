@@ -99,50 +99,64 @@ public class CalculationService : ICalculationService
     }
     
     public async Task<ClearHistoryResult> ClearHistory(
-        ClearHistoryCommand command,
+        ClearHistoryModel model,
         CancellationToken token)
     {
-        var clearAll = command.CalculationIds.Length == 0;
-        var connectedGoodIds = clearAll
-            ? await _calculationRepository.AllConnectedGoodIdsQuery(
-                command.UserId,
-                token)
-            : await _calculationRepository.ConnectedGoodIdsQuery(
-                new ClearHistoryCommandModel(command.UserId, command.CalculationIds),
-                token);
-
         using var transaction = _calculationRepository.CreateTransactionScope();
-        if (clearAll)
-        {
-            await _calculationRepository.ClearAllHistory(command.UserId, token);
-        }
-        else
-        {
-            await _calculationRepository.ClearHistory(
-                new ClearHistoryCommandModel(command.UserId, command.CalculationIds),
+        await _calculationRepository.ClearHistory(model.CalculationIds,
                 token);
-        }
-        await _goodsRepository.ClearHistory(connectedGoodIds, token);
+        await _goodsRepository.ClearHistory(model.ConnectedGoodIds, token);
+        transaction.Complete();
+        return new ClearHistoryResult();
+    }
+    
+    public async Task<ClearHistoryResult> ClearAllHistory(
+        ClearAllHistoryModel model,
+        CancellationToken token)
+    {
+        using var transaction = _calculationRepository.CreateTransactionScope();
+        await _calculationRepository.ClearAllHistory(model.UserId, token);
+        await _goodsRepository.ClearHistory(model.ConnectedGoodIds, token);
         transaction.Complete();
         return new ClearHistoryResult();
     }
 
     public async Task<long[]> CalculationsBelongToAnotherUser(
-        ClearHistoryCommand command,
+        QueryModel model,
         CancellationToken token)
     {
         var result =  await _calculationRepository.CalculationsBelongToAnotherUser(
-            new ClearHistoryCommandModel(command.UserId, command.CalculationIds),
+            new ClearHistoryCommandModel(model.UserId, model.CalculationIds),
             token);
         return result;
     }
     
     public async Task<long[]> AbsentCalculations(
-        ClearHistoryCommand command,
+        QueryModel model,
         CancellationToken token)
     {
         var result =  await _calculationRepository.AbsentCalculations(
-            new ClearHistoryCommandModel(command.UserId, command.CalculationIds),
+            new ClearHistoryCommandModel(model.UserId, model.CalculationIds),
+            token);
+        return result;
+    }
+    
+    public async Task<long[]> AllConnectedGoodIdsQuery(
+        long userId,
+        CancellationToken token)
+    {
+        var result =  await _calculationRepository.AllConnectedGoodIdsQuery(
+            userId,
+            token);
+        return result;
+    }
+    
+    public async Task<long[]> ConnectedGoodIdsQuery(
+        QueryModel model,
+        CancellationToken token)
+    {
+        var result =  await _calculationRepository.ConnectedGoodIdsQuery(
+            new ClearHistoryCommandModel(model.UserId, model.CalculationIds),
             token);
         return result;
     }

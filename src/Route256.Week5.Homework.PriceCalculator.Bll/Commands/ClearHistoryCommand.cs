@@ -24,18 +24,41 @@ public class ClearHistoryCommandHandler
         CancellationToken cancellationToken)
     {
         var anotherUsersCalculations =
-            await _calculationService.CalculationsBelongToAnotherUser(request, cancellationToken);
+            await _calculationService.CalculationsBelongToAnotherUser(
+                new QueryModel(request.UserId, request.CalculationIds),
+                cancellationToken);
         if (anotherUsersCalculations.Length != 0)
         {
             throw new OneOrManyCalculationsBelongsToAnotherUserException(anotherUsersCalculations);
         }
         var absentCalculations = 
-            await _calculationService.AbsentCalculations(request, cancellationToken);
+            await _calculationService.AbsentCalculations(
+                new QueryModel(request.UserId, request.CalculationIds),
+                cancellationToken);
         if (absentCalculations.Length != 0)
         {
             throw new OneOrManyCalculationsNotFoundException();
         }
-        await _calculationService.ClearHistory(request, cancellationToken);
+        var clearAll = request.CalculationIds.Length == 0;
+        var connectedGoodIds = clearAll
+            ? await _calculationService.AllConnectedGoodIdsQuery(
+                request.UserId,
+                cancellationToken)
+            : await _calculationService.ConnectedGoodIdsQuery(
+                new QueryModel(request.UserId, request.CalculationIds),
+                cancellationToken);
+        if (clearAll)
+        {
+            await _calculationService.ClearAllHistory(
+                new ClearAllHistoryModel(request.UserId,
+                    connectedGoodIds), cancellationToken);
+        }
+        else
+        {
+            await _calculationService.ClearHistory(
+                new ClearHistoryModel(connectedGoodIds,
+                    request.CalculationIds), cancellationToken);
+        }
         return new ClearHistoryResult();
     }
 }
