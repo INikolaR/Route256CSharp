@@ -22,6 +22,7 @@ public static class Postgres
         
         mapper.MapComposite<CalculationEntityV1>("calculations_v1", Translator);
         mapper.MapComposite<GoodEntityV1>("goods_v1", Translator);
+        mapper.MapComposite<PriceAnomalyEntityV1>("price_anomalies_v1", Translator);
     }
 
     /// <summary>

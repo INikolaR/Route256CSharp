@@ -16,6 +16,7 @@ public static class ServiceCollectionExtensions
         }));
         services.AddTransient<ICalculationService, CalculationService>();
         services.AddHostedService<PriceCalculatorHostedService>();
+        services.AddHostedService<AnomalyFinderHostedService>();
         return services;
     }
 }
