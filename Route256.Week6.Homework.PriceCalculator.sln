@@ -25,6 +25,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{BD08B3
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Route256.Week6.Homework.PriceCalculator.BackgroundServices", "src\Route256.Week6.Homework.PriceCalculator.BackgroundServices\Route256.Week6.Homework.PriceCalculator.BackgroundServices.csproj", "{F6FBC1CC-3FF3-48DD-B87F-DDDB0E2A541E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodDataGenerator", "src\GoodDataGenerator\GoodDataGenerator.csproj", "{18DC218F-2EC5-4F50-A319-BFBFFE505F67}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +62,14 @@ Global
 		{E69F81B6-4B1A-4341-82CD-96091945D7A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E69F81B6-4B1A-4341-82CD-96091945D7A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E69F81B6-4B1A-4341-82CD-96091945D7A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6FBC1CC-3FF3-48DD-B87F-DDDB0E2A541E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6FBC1CC-3FF3-48DD-B87F-DDDB0E2A541E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6FBC1CC-3FF3-48DD-B87F-DDDB0E2A541E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6FBC1CC-3FF3-48DD-B87F-DDDB0E2A541E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18DC218F-2EC5-4F50-A319-BFBFFE505F67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18DC218F-2EC5-4F50-A319-BFBFFE505F67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18DC218F-2EC5-4F50-A319-BFBFFE505F67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18DC218F-2EC5-4F50-A319-BFBFFE505F67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A81B5635-C0CA-4AA2-AD1D-D91288A2C43A} = {66F59723-311B-4F39-80B5-DA3070F4309F}

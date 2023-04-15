@@ -2,6 +2,7 @@ using FluentValidation.AspNetCore;
 using Route256.Week5.Workshop.PriceCalculator.Api.NamingPolicies;
 using Route256.Week5.Workshop.PriceCalculator.Bll.Extensions;
 using Route256.Week5.Workshop.PriceCalculator.Dal.Extensions;
+using Route256.Week6.Homework.PriceCalculator.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,7 +34,8 @@ services.AddFluentValidation(conf =>
 services
     .AddBll()
     .AddDalInfrastructure(builder.Configuration)
-    .AddDalRepositories();
+    .AddDalRepositories()
+    .AddKafka(builder.Configuration);
 
 var app = builder.Build();
 
