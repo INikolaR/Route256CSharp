@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Route256.Week5.Homework.Pri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Route256.Week5.Homework.TestingInfrastructure", "test\Route256.Week5.Homework.TestingInfrastructure\Route256.Week5.Homework.TestingInfrastructure.csproj", "{E69F81B6-4B1A-4341-82CD-96091945D7A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "src\Client\Client.csproj", "{5BF840CD-CC7A-4CE8-B0BC-578F2CEDB9E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{E69F81B6-4B1A-4341-82CD-96091945D7A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E69F81B6-4B1A-4341-82CD-96091945D7A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E69F81B6-4B1A-4341-82CD-96091945D7A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BF840CD-CC7A-4CE8-B0BC-578F2CEDB9E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BF840CD-CC7A-4CE8-B0BC-578F2CEDB9E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BF840CD-CC7A-4CE8-B0BC-578F2CEDB9E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BF840CD-CC7A-4CE8-B0BC-578F2CEDB9E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A81B5635-C0CA-4AA2-AD1D-D91288A2C43A} = {66F59723-311B-4F39-80B5-DA3070F4309F}

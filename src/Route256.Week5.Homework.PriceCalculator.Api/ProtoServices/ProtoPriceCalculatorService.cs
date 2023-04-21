@@ -20,6 +20,8 @@ public class ProtoPriceCalculatorService : Calculator.CalculatorBase
     public override async Task<ProtoCalculationResponse> ProtoCalculatePrice(
         ProtoCalculationRequest request, ServerCallContext context)
     {
+        Console.WriteLine("Called calculate");
+        Console.WriteLine(request.ToString());
         var command = new CalculateDeliveryPriceCommand(
             request.UserId,
             request.Goods
