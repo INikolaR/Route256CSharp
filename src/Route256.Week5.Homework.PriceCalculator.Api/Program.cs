@@ -1,10 +1,12 @@
 using FluentValidation.AspNetCore;
 using Route256.Week5.Homework.PriceCalculator.Api.Middleware;
 using Route256.Week5.Homework.PriceCalculator.Api.NamingPolicies;
+using Route256.Week5.Homework.PriceCalculator.Api.ProtoServices;
 using Route256.Week5.Homework.PriceCalculator.Bll.Extensions;
 using Route256.Week5.Homework.PriceCalculator.Dal.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddGrpcReflection().AddGrpc();
 
 // Add services to the container.
 var services = builder.Services;
@@ -37,6 +39,9 @@ services
     .AddDalRepositories();
 
 var app = builder.Build();
+
+app.MapGrpcService<ProtoPriceCalculatorService>();
+app.MapGrpcReflectionService();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
