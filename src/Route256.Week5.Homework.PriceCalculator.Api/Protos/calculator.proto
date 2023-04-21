@@ -1,0 +1,50 @@
+﻿syntax="proto3";
+
+service Calculator {
+  rpc ProtoCalculatePrice (ProtoCalculationRequest) returns (ProtoCalculationResponse);
+  rpc ProtoClearHistory (ProtoClearHistoryRequest) returns (ProtoClearHistoryResponse);
+  rpc ProtoGetHistory (ProtoGetHistoryRequest) returns (stream ProtoGetHistoryResponse);
+  rpc ProtoBidirectionalStreamingCalculatePrice (stream ProtoCalculationRequest) returns (stream ProtoCalculationResponse);
+}
+
+message ProtoCalculationRequest {
+  int64 UserId = 1;
+  repeated ProtoGood Goods = 2;
+
+}
+
+message ProtoCalculationResponse {
+  int64 CalculationId = 1;
+  double Price = 2;
+}
+
+message ProtoGood {
+  double Length = 1;
+  double Width = 2;
+  double Height = 3;
+  double Weight = 4;
+}
+
+message ProtoClearHistoryRequest {
+  int64 UserId = 1;
+  repeated int64 CalculationIds = 2;
+}
+
+message ProtoClearHistoryResponse {
+
+}
+
+message ProtoGetHistoryRequest {
+  int64 UserId = 1;
+}
+
+message ProtoGetHistoryResponse {
+  ProtoCargoResponse Cargo = 1;
+  double Price = 2;
+}
+
+message ProtoCargoResponse {
+  double Volume = 1;
+  double Weight = 2;
+  repeated int64 GoodIds = 3;
+}
